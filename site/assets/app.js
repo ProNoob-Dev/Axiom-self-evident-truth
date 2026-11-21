@@ -62,8 +62,12 @@
   /* ---- health ---- */
   api("/health").then(function (h) {
     $("#health-line").textContent = "API live · " + h.llm_provider + " · " + h.retrieval;
+    var sp = $("#sync-pill");
+    if (sp) { sp.textContent = "API LIVE · LLM " + String(h.llm_provider).toUpperCase(); sp.classList.remove("down"); }
   }).catch(function () {
     $("#health-line").textContent = "API unreachable — start it on port 8125";
+    var sp = $("#sync-pill");
+    if (sp) { sp.textContent = "API UNREACHABLE"; sp.classList.add("down"); }
   });
 
   /* ---- ask ---- */
@@ -74,6 +78,8 @@
   }
   function renderAsk(data, question) {
     state.lastAsk = { question: question, data: data };
+    var empty = $("#ask-empty");
+    if (empty) empty.hidden = true;
     var box = $("#ask-result");
     var h = '<div class="answer panel">';
     h += '<p class="answer__text">' + esc(data.answer || data.message || "") + "</p>";
@@ -252,7 +258,7 @@
       state.disputes = d.disputes;
       var clusters = d.reason_clusters || {};
       var ch = '<div class="stats">' + Object.keys(clusters).sort().map(function (k) {
-        return '<div class="stat"><strong>' + clusters[k] + "</strong><span>" + esc(k) + "</span><small>reason cluster</small></div>";
+        return '<div class="stat"><span>' + esc(k) + "</span><strong>" + clusters[k] + "</strong><small>reason cluster</small></div>";
       }).join("") + "</div>";
       $("#dispute-clusters").innerHTML = ch;
       var h = "<table><thead><tr><th>Dispute</th><th>Reason</th><th>Customer</th><th>Invoice</th><th>Status</th><th>Opened</th></tr></thead><tbody>";
@@ -360,23 +366,53 @@
   }
 
   /* ---- router ---- */
+  function donutSvg(dist, total) {
+    var C = 2 * Math.PI * 54, off = 0, parts = "";
+    [["high", "#00e676"], ["medium", "#ffb800"], ["low", "#ff5c7a"]].forEach(function (p) {
+      var v = dist[p[0]] || 0, len = total ? (v / total) * C : 0;
+      if (len > 0) parts += '<circle cx="70" cy="70" r="54" fill="none" stroke="' + p[1] + '" stroke-width="16" stroke-dasharray="' +
+        Math.max(len - 2, 0).toFixed(1) + " " + (C - Math.max(len - 2, 0)).toFixed(1) + '" stroke-dashoffset="' + (-off).toFixed(1) +
+        '" transform="rotate(-90 70 70)"/>';
+      off += len;
+    });
+    return '<svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="Confidence distribution donut">' +
+      '<circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="16"/>' + parts +
+      '<text x="70" y="66" text-anchor="middle" fill="#e2e4e9" font-size="24" font-weight="800">' + total + '</text>' +
+      '<text x="70" y="86" text-anchor="middle" fill="#9aa3b2" font-size="11">decisions</text></svg>';
+  }
+  function bandPill(value, good, warn) {
+    if (value == null) return '<span class="badge kpi-pill">NO DATA</span>';
+    if (value >= good) return '<span class="badge badge--green kpi-pill">EXCELLENT</span>';
+    if (value >= warn) return '<span class="badge badge--amber kpi-pill">WATCH</span>';
+    return '<span class="badge badge--red kpi-pill">REVIEW</span>';
+  }
   function loadRouter() {
     api("/router").then(function (r) {
       var dist = r.confidence_distribution || {}, dom = r.domains || {};
       var total = Object.keys(dist).reduce(function (a, k) { return a + dist[k]; }, 0) || 1;
-      var h = '<div class="grid2"><div class="panel"><h3>Confidence distribution</h3><p class="sub">' + total + " routing decisions in the audit log</p>";
-      ["high", "medium", "low"].forEach(function (b) {
-        var v = dist[b] || 0;
-        h += '<div class="bar-row"><span>' + b + '</span><span class="bar"><i style="width:' + Math.round(v / total * 100) + '%"></i></span><span class="mono">' + v + "</span></div>";
+      var h = '<div class="charts">';
+      h += '<div class="panel"><h3>Confidence distribution</h3><p class="sub">' + total + " routing decisions in the audit log</p>" +
+        '<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">' + donutSvg(dist, total) + '<div style="flex:1;min-width:140px">';
+      [["high", "#00e676"], ["medium", "#ffb800"], ["low", "#ff5c7a"]].forEach(function (p) {
+        var v = dist[p[0]] || 0;
+        h += '<div style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px">' +
+          '<span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:' + p[1] + ';margin-right:8px"></span>' + p[0] +
+          '</span><span class="mono">' + v + " · " + Math.round(v / total * 100) + "%</span></div>";
       });
-      h += '</div><div class="panel"><h3>False-positive rate — golden set</h3><p class="sub">Measured on labelled questions only; live traffic has no labels.</p>' +
-        '<div class="stats"><div class="stat"><strong>' + fmtPct(r.golden_false_positive_rate) + '</strong><span>False-positive rate</span><small>golden set, ' + (r.golden_runs || 0) + ' runs</small></div>' +
-        '<div class="stat"><strong>' + fmtPct(r.golden_router_accuracy) + '</strong><span>Router accuracy</span><small>golden set</small></div></div></div></div>';
+      h += "</div></div></div>";
+      h += '<div class="panel"><h3>False-positive rate — golden set</h3><p class="sub">Measured on labelled questions only; live traffic has no labels.</p>' +
+        (r.golden_false_positive_rate === 0 ? '<span class="badge badge--green">ZERO</span>' : '<span class="badge badge--amber">NON-ZERO</span>') +
+        '<div class="kpi" style="margin-top:10px">' + fmtPct(r.golden_false_positive_rate) + '</div>' +
+        '<p class="sub" style="margin:8px 0 0">' + (r.golden_runs || 0) + " golden runs</p></div>";
+      h += '<div class="panel"><h3>Router accuracy — golden set</h3><p class="sub">Correct route on labelled questions.</p>' +
+        bandPill(r.golden_router_accuracy, .8, .5) +
+        '<div class="kpi" style="margin-top:10px">' + fmtPct(r.golden_router_accuracy) + '</div>' +
+        '<p class="sub" style="margin:8px 0 0">' + (r.golden_runs || 0) + " golden runs</p></div>";
       h += '<div class="panel"><h3>Routing by domain</h3><p class="sub">Decisions in the audit log</p>';
       Object.keys(dom).sort().forEach(function (k) {
         h += '<div class="bar-row"><span>' + esc(k) + '</span><span class="bar"><i style="width:' + Math.round(dom[k] / total * 100) + '%"></i></span><span class="mono">' + dom[k] + "</span></div>";
       });
-      h += "</div>";
+      h += "</div></div>";
       $("#router-body").innerHTML = h;
     }).catch(function (e) { $("#router-body").innerHTML = '<p class="app-error">Could not load router data: ' + esc(e.message) + "</p>"; });
   }
@@ -410,13 +446,15 @@
     Promise.all([api("/metrics"), api("/router")]).then(function (res) {
       var m = res[0], r = res[1];
       var h = '<div class="stats">' +
-        '<div class="stat"><strong>' + fmtPct(m.autonomy_rate) + '</strong><span>Autonomy rate</span><small>' + m.answered + " of " + m.total_questions + " questions answered</small></div>" +
-        '<div class="stat"><strong>' + fmtPct(m.routing_accuracy_golden) + '</strong><span>Routing accuracy</span><small>golden set</small></div>' +
-        '<div class="stat"><strong>' + m.total_questions + '</strong><span>Questions asked</span><small>live audit log</small></div>' +
-        '<div class="stat"><strong>' + m.routed_elsewhere + '</strong><span>Routed elsewhere</span><small>clarified, dev or disputes</small></div>' +
-        '<div class="stat"><strong>' + (m.analytics_correct_golden == null ? "—" : m.analytics_correct_golden) + '</strong><span>Analytics correct</span><small>golden set</small></div>' +
-        '<div class="stat"><strong>' + (m.sql_validation_correct_golden == null ? "—" : m.sql_validation_correct_golden) + '</strong><span>SQL validation correct</span><small>golden set</small></div></div>' +
-        '<div class="panel"><h3>Golden-set router</h3><p class="sub">' + (r.golden_runs || 0) + " runs · false-positive rate " + fmtPct(r.golden_false_positive_rate) + "</p>" +
+        '<div class="stat">' + bandPill(m.autonomy_rate, .8, .5) + '<span>Autonomy rate</span><strong>' + fmtPct(m.autonomy_rate) + '</strong><small>' + m.answered + " of " + m.total_questions + " questions answered</small></div>" +
+        '<div class="stat">' + bandPill(m.routing_accuracy_golden, .8, .5) + '<span>Routing accuracy</span><strong>' + fmtPct(m.routing_accuracy_golden) + '</strong><small>golden set</small></div>' +
+        '<div class="stat">' + (r.golden_false_positive_rate === 0 ? '<span class="badge badge--green kpi-pill">ZERO</span>' : '<span class="badge badge--amber kpi-pill">NON-ZERO</span>') + '<span>False-positive rate</span><strong>' + fmtPct(r.golden_false_positive_rate) + '</strong><small>golden set, ' + (r.golden_runs || 0) + ' runs</small></div>' +
+        '<div class="stat"><span class="badge badge--accent kpi-pill">LIVE</span><span>Questions asked</span><strong>' + m.total_questions + '</strong><small>live audit log</small></div></div>' +
+        '<div class="panel"><h3>Golden-set detail</h3><p class="sub">' + (r.golden_runs || 0) + " runs · false-positive rate " + fmtPct(r.golden_false_positive_rate) + "</p>" +
+        '<div class="stats" style="grid-template-columns:repeat(3,1fr)">' +
+        '<div class="stat"><span>Routed elsewhere</span><strong>' + m.routed_elsewhere + '</strong><small>clarified, dev or disputes</small></div>' +
+        '<div class="stat"><span>Analytics correct</span><strong>' + (m.analytics_correct_golden == null ? "—" : m.analytics_correct_golden) + '</strong><small>golden set</small></div>' +
+        '<div class="stat"><span>SQL validation correct</span><strong>' + (m.sql_validation_correct_golden == null ? "—" : m.sql_validation_correct_golden) + '</strong><small>golden set</small></div></div>' +
         '<p style="margin:0">Autonomy rate is live (answered / asked). Routing accuracy and the false-positive rate come from the labelled golden set, because live traffic has no labels to score against.</p></div>';
       $("#metrics-body").innerHTML = h;
     }).catch(function (e) { $("#metrics-body").innerHTML = '<p class="app-error">Could not load metrics: ' + esc(e.message) + "</p>"; });

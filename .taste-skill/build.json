@@ -1,0 +1,11 @@
+{
+ "page": null,
+ "url": "http://127.0.0.1:8130/",
+ "root": null,
+ "kind": "software",
+ "category": "enterprise agentic copilot console",
+ "primary": "Ask a billing question",
+ "rounds": 3,
+ "start": "2026-11-21T14:58:03.204Z",
+ "by": "gate.mjs --start"
+}

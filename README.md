@@ -401,9 +401,15 @@ practice problems).
 
 ## UI
 
-The `site/` front-end (mixed Linear + Hex + LangSmith direction) is being
-built in parallel; screenshots will be added here once reviewed. No
-screenshots are embedded until then.
+The `site/` front-end is restyled to the TOPHTMLCSS streaming-analytics
+dashboard language: obsidian nebula ground, cyan + gold accents, glossy
+KPI cards, a 4-chart router grid, leaderboard-style tables, self-hosted
+Outfit + JetBrains Mono. All numbers come from the live API or the seeded
+data; no decorative data. Screenshots live in `site/shots/` and will be
+embedded here once reviewed. Taste gate on the restyled UI: FAIL 17
+(round 1) — all landing-page checks that do not fit a working app
+console; one genuine fix landed after (h2 text aligned to the page
+margin, verified at 296px). No screenshots are embedded until then.
 
 ## What is deliberately not built
 

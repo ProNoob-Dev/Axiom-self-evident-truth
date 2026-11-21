@@ -1,7 +1,7 @@
 {
- "page": "/home/hatch/workspace/projects/axiom/site/index.html",
- "url": "http://127.0.0.1:5200/index.html",
- "at": "2026-11-21T14:20:51.573Z",
+ "page": "http://127.0.0.1:8130/",
+ "url": "http://127.0.0.1:8130/",
+ "at": "2026-11-21T14:58:05.732Z",
  "out": "/home/hatch/workspace/projects/axiom/.taste-skill/gate/consistency",
  "widths": [
   {
@@ -16,59 +16,50 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question",
-     "msg": "the next section shows on the first screen: it starts at 128px on a 900px screen (the hero ends at 104px)",
+     "msg": "the next section shows on the first screen: it starts at 136px on a 900px screen (the hero ends at 109px)",
      "stop": 0,
      "crop": "1440-01-hero-fill.jpg",
      "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
     },
     {
-     "check": "flush",
-     "sev": "FAIL",
-     "sel": "form#ask-form > div.chips > button.chip:nth-of-type(1)",
-     "text": "Show refunds in Mumbai last month",
-     "msg": "its button sits 0px above the rule on top of the footer",
-     "stop": 0,
-     "crop": "1440-02-flush.jpg",
-     "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)"
-    },
-    {
-     "check": "nav",
+     "check": "cta",
      "sev": "FAIL",
      "sel": "main#main > div.topbar",
      "text": "",
+     "msg": "the hero has no button (the nav's does not count)",
      "stop": 0,
-     "msg": "the nav has no bar, and its pieces sit past the content's edges (665-1312px against 296-1144px)",
-     "crop": "1440-03-nav.jpg",
-     "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it"
+     "crop": "1440-02-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
     },
     {
-     "check": "button-styles",
+     "check": "heading-scale",
      "sev": "FAIL",
-     "sel": "form#ask-form > div.ask-box > button.btn.btn--primary",
-     "text": "Ask Axiom",
+     "sel": "div.panel > div.stats > div.stat:nth-of-type(1) > strong",
+     "text": "3",
+     "msg": "the figure \"3\" is set at 34px, larger than the section headings (h2 20px); 2 more like it",
+     "fix": "set figures at the h2 size or under: a stat reads as data, not as the heading",
      "stop": 0,
-     "msg": "one button style (soft, fill #2dd4bf, outline #2dd4bf) in 2 heights: 36, 49px (\"Ask Axiom\" 49px, \"Ask Axiom\" 36px)",
-     "crop": "1440-04-button-styles.jpg",
-     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+     "crop": "1440-03-heading-scale.jpg"
     },
     {
-     "check": "same-action",
+     "check": "off-grid",
      "sev": "FAIL",
-     "sel": "button#topbar-ask",
-     "text": "Ask Axiom",
+     "sel": "section#view-ask > h2",
+     "text": "Ask a billing question",
      "stop": 0,
-     "msg": "\"Ask Axiom\" appears 2 times in different looks: 36px and 49px tall, labels at 13px and 14px",
-     "crop": "1440-05-same-action.jpg",
-     "fix": "draw one action the same way everywhere (only the nav copy may be one size smaller)"
+     "msg": "left edge at 314px, 18px off the page margin at 296px (7 elements, like p.lede)",
+     "crop": "1440-04-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
     },
     {
-     "check": "assets",
+     "check": "copy-headings",
      "sev": "WARN",
-     "sel": "(the page)",
-     "text": "",
-     "stop": null,
-     "msg": "the data file api/health did not load (404)",
-     "fix": "fix the path, or remove the reference"
+     "sel": "div#ask-empty > div.panel > h3",
+     "text": "Ask first",
+     "msg": "\"Ask first\" names no product, part, place or section (the one brand line a page may have)",
+     "stop": 0,
+     "crop": "1440-05-copy-headings.jpg",
+     "fix": "name the thing in every heading: the product, a part, the place or a section noun"
     },
     {
      "check": "copy-buttons",
@@ -91,24 +82,42 @@
      "fix": "label buttons with a verb and what the visitor gets (\"Book a room\", \"Start free trial\")"
     },
     {
-     "check": "section-gaps",
+     "check": "copy-actions",
      "sev": "WARN",
-     "sel": "main#main > div.topbar / section#view-ask",
+     "sel": "(the page)",
      "text": "",
-     "stop": 0,
-     "msg": "25px between these sections, -54% against the median 55px",
-     "crop": "1440-08-section-gaps.jpg",
-     "fix": "use one gap between sections (all within 25% of each other)"
+     "msg": "the main action \"Ask a billing question\" does not read word for word the same in the nav or hero and the closing section",
+     "stop": null,
+     "fix": "few actions, one wording: at most 2 in the hero, the main action word for word in nav, hero and close"
     },
     {
-     "check": "section-gaps",
+     "check": "heading-scale",
      "sev": "WARN",
-     "sel": "section#view-ask / main#main > footer",
+     "sel": "(the page)",
      "text": "",
+     "msg": "the page has no visible h1",
+     "stop": null,
+     "fix": "size headings by level: the h1 largest, one size per level, each level below the one above"
+    },
+    {
+     "check": "heading-scale",
+     "sev": "WARN",
+     "sel": "div.panel > div.stats > div.stat:nth-of-type(4) > strong",
+     "text": "SQL",
+     "msg": "1 line of plain text set larger than the section headings (34px against h2 20px)",
      "stop": 0,
-     "msg": "84px between these sections, +54% against the median 55px",
-     "crop": "1440-09-section-gaps.jpg",
-     "fix": "use one gap between sections (all within 25% of each other)"
+     "crop": "1440-08-heading-scale.jpg",
+     "fix": "size headings by level: the h1 largest, one size per level, each level below the one above"
+    },
+    {
+     "check": "copy-length",
+     "sev": "WARN",
+     "sel": "section#view-ask",
+     "text": "Ask a billing question",
+     "msg": "1 section over 90 words a screen outside the UI mocks (\"Ask a billing question\" 91); 55 words a screen across the page (109 words in 2 screens): a tech page says it in about 80 or fewer",
+     "fix": "cut every section to its heading, one line and the product UI: the UI says the rest; no second paragraph, no list of feature sentences",
+     "stop": 0,
+     "crop": "1440-09-copy-length.jpg"
     },
     {
      "check": "moment-none",
@@ -134,7 +143,7 @@
      "sev": "FAIL",
      "sel": "main#main > div.topbar",
      "text": "Axiom copilot console Ask workspace One ",
-     "msg": "the hero ends at 104px on a 900px screen, 796px above the fold: it ends at the fold, 1px either way (SR-1)",
+     "msg": "the hero ends at 109px on a 900px screen, 791px above the fold: it ends at the fold, 1px either way (SR-1)",
      "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
      "rule": "SR-1 T1",
      "crop": "1440-rhythm-01-hero-screen.jpg"
@@ -144,7 +153,7 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question Plain English in,",
-     "msg": "772px of the next section shows on the first screen (from 128px on a 900px screen): nothing below the hero shows at load (SR-1)",
+     "msg": "767px of the next section shows on the first screen (from 133px on a 900px screen): nothing below the hero shows at load (SR-1)",
      "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
      "rule": "SR-1 T2"
     },
@@ -153,7 +162,7 @@
      "sev": "FAIL",
      "sel": "main#main > footer",
      "text": "Axiom — one shared LangGraph core, three",
-     "msg": "the section is 136px tall (0.2 screens), 764px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "msg": "the section is 114px tall (0.1 screens), 786px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
      "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
      "rule": "SR-2 T-height",
      "crop": "1440-rhythm-02-section-height.jpg"
@@ -163,7 +172,7 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question Plain English in,",
-     "msg": "the section is 214px tall (0.2 screens), 686px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "msg": "the section is 457px tall (0.5 screens), 443px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
      "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
      "rule": "SR-2 T-height"
     },
@@ -172,7 +181,7 @@
      "sev": "FAIL",
      "sel": "main#main > footer",
      "text": "Axiom — one shared LangGraph core, three",
-     "msg": "the section starts at 390px, 390px below the screen grid (0 x 900px): sections start on whole screens (SR-2)",
+     "msg": "the section starts at 638px, 262px above the screen grid (1 x 900px): sections start on whole screens (SR-2)",
      "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
      "rule": "SR-2 T-grid"
     },
@@ -181,46 +190,27 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question Plain English in,",
-     "msg": "the section starts at 128px, 128px below the screen grid (0 x 900px): sections start on whole screens (SR-2)",
+     "msg": "the section starts at 133px, 133px below the screen grid (0 x 900px): sections start on whole screens (SR-2)",
      "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
      "rule": "SR-2 T-grid"
-    },
-    {
-     "check": "section-height",
-     "sev": "FAIL",
-     "sel": "main#main > div.topbar",
-     "text": "Axiom copilot console Ask workspace One ",
-     "msg": "the section starts at 28px, 28px below the screen grid (0 x 900px): sections start on whole screens (SR-2)",
-     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
-     "rule": "SR-2 T-grid"
-    },
-    {
-     "check": "section-height",
-     "sev": "FAIL",
-     "sel": "section#view-ask",
-     "text": "Ask a billing question Plain English in,",
-     "msg": "the section's content does not fit it: its lowest content ends 214px below its top, past 142px (the section less 72px of bottom padding) (SR-2)",
-     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
-     "rule": "SR-2 T-fit"
     },
     {
      "check": "section-height",
      "sev": "FAIL",
      "sel": "main#main > footer",
      "text": "Axiom — one shared LangGraph core, three",
-     "msg": "the section's content does not fit it: its lowest content ends 134px below its top, past 64px (the section less 72px of bottom padding) (SR-2)",
+     "msg": "the section's content does not fit it: its lowest content ends 111px below its top, past 42px (the section less 72px of bottom padding) (SR-2)",
      "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
      "rule": "SR-2 T-fit"
     },
     {
-     "check": "one-section",
+     "check": "section-height",
      "sev": "FAIL",
-     "sel": "main#main > div.topbar > h1",
-     "text": "Axiom copilot console",
-     "msg": "the screen at scroll 0px (stride 0) shows 136px of section 3 and the heading of section 1 whole and the content of 3 sections, over 24px each beside section 2: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
-     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
-     "rule": "SR-4 T-views",
-     "crop": "1440-rhythm-03-one-section.jpg"
+     "sel": "section#view-ask",
+     "text": "Ask a billing question Plain English in,",
+     "msg": "the section's content does not fit it: its lowest content ends 398px below its top, past 385px (the section less 72px of bottom padding) (SR-2)",
+     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
+     "rule": "SR-2 T-fit"
     },
     {
      "check": "one-section",
@@ -229,7 +219,8 @@
      "text": "Axiom copilot console Ask workspace One ",
      "msg": "a <div> sits directly in <main>: every part of <main> is a <section> (SR-4)",
      "fix": "put every block of <main> in a <section>, and give a band its own section instead of a ground inside one",
-     "rule": "SR-4 T-dom"
+     "rule": "SR-4 T-dom",
+     "crop": "1440-rhythm-03-one-section.jpg"
     },
     {
      "check": "one-section",
@@ -241,11 +232,29 @@
      "rule": "SR-4 T-dom"
     },
     {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div#ask-empty > div.panel",
+     "text": "Ask first Axiom routes to a domain, vali",
+     "msg": "a band: a box 100% of the section wide on a ground of its own that holds only text: the section's own ground is the band (SR-4)",
+     "fix": "put every block of <main> in a <section>, and give a band its own section instead of a ground inside one",
+     "rule": "SR-4 T-dom"
+    },
+    {
+     "check": "one-section",
+     "sev": "WARN",
+     "sel": "main#main > div.topbar > h1",
+     "text": "Axiom copilot console",
+     "msg": "the screen at scroll 0px (stride 0) shows 114px of section 3 and the heading of section 1 whole and the content of 3 sections, over 24px each beside section 2: a screen shows one section (another may peek 8px, 24px WARN) (it sits in a part held on screen as the page scrolls: told as a WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views"
+    },
+    {
      "check": "container-edges",
      "sev": "FAIL",
      "sel": "main#main > div.topbar",
      "text": "Axiom copilot console Ask workspace One ",
-     "msg": "the content of section 1 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+     "msg": "the content of section 1 runs 296px from the left and 32px from the right (read from its outermost blocks: no .wrap): 296 and 32px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
      "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
      "rule": "SR-6 T1-margins",
      "crop": "1440-rhythm-04-container-edges.jpg"
@@ -255,7 +264,7 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question Plain English in,",
-     "msg": "the content of section 2 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+     "msg": "the content of section 2 runs 296px from the left and 32px from the right (read from its outermost blocks: no .wrap): 296 and 32px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
      "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
      "rule": "SR-6 T1-margins"
     },
@@ -264,7 +273,7 @@
      "sev": "FAIL",
      "sel": "main#main > footer",
      "text": "Axiom — one shared LangGraph core, three",
-     "msg": "the content of section 3 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+     "msg": "the content of section 3 runs 296px from the left and 32px from the right (read from its outermost blocks: no .wrap): 296 and 32px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
      "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
      "rule": "SR-6 T1-margins"
     },
@@ -282,27 +291,46 @@
      "sev": "FAIL",
      "sel": "div.shell",
      "text": "AxiomEnterprise agentic copilot Workspac",
-     "msg": "a <div> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+     "msg": "a <div> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (and 3 more like it: \"Axiom copilot console As\", \"Ask a billing question P\", \"Axiom — one shared LangG\") (SR-6)",
      "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
      "rule": "SR-6 T1-structure"
     },
     {
      "check": "container-edges",
      "sev": "FAIL",
-     "sel": "main#main > div.topbar",
-     "text": "Axiom copilot console Ask workspace One ",
-     "msg": "the section needs exactly one in-flow child .wrap (it has 2 in-flow children, 0 .wrap) (and 2 more like it: \"Ask a billing question P\", \"Axiom — one shared LangG\") (SR-6)",
-     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
-     "rule": "SR-6 T1-structure"
+     "sel": "div#ask-empty > div.panel > h3",
+     "text": "Ask first",
+     "msg": "2 text blocks start on a left line at x 319, 23px from the container's left: text starts on the container's left, or on one split line (x 769, 864, 959) (also \"Axiom routes to a domain, valida\") (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "section#view-ask > h2",
+     "text": "Ask a billing question",
+     "msg": "1 text block starts on a left line at x 314, 18px from the container's left: text starts on the container's left, or on one split line (x 769, 864, 959) (and 1 more like it: \"Ask a billing question\") (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines"
     },
     {
      "check": "container-edges",
      "sev": "FAIL",
      "sel": "input#ask-q",
      "text": "",
-     "msg": "a box over half the container wide runs 296-1194px, not on the container's lines at 296-1312px (SR-6)",
+     "msg": "a box over half the container wide runs 296-1292px, not on the container's lines at 296-1408px (SR-6)",
      "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
      "rule": "SR-6 T6-right-edges"
+    },
+    {
+     "check": "row-lines",
+     "sev": "FAIL",
+     "sel": "div#ask-empty > div.panel > div.stats",
+     "text": "Domains3dev assistant · analytics · disp",
+     "msg": "a row of 4 items: its first item starts at 319px, the container's left line at 296px; its last item ends at 1385px, the container's right line at 1408px (2px either way) (SR-7)",
+     "fix": "start the row's first item on the container's left line and end its last on the right line, every item one height",
+     "rule": "SR-7 T-rows",
+     "crop": "1440-rhythm-05-row-lines.jpg"
     }
    ],
    "glAsked": 0
@@ -310,7 +338,7 @@
   {
    "width": 390,
    "height": 844,
-   "screens": 2,
+   "screens": 3,
    "held": 0,
    "errors": [],
    "findings": [
@@ -319,20 +347,10 @@
      "sev": "FAIL",
      "sel": "section#view-ask",
      "text": "Ask a billing question",
-     "msg": "the next section shows on the first screen: it starts at 657px on a 844px screen (the hero ends at 632px)",
+     "msg": "the next section shows on the first screen: it starts at 684px on a 844px screen (the hero ends at 661px)",
      "stop": 0,
      "crop": "390-01-hero-fill.jpg",
      "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
-    },
-    {
-     "check": "flush",
-     "sev": "FAIL",
-     "sel": "form#ask-form > div.chips > button.chip:nth-of-type(3)",
-     "text": "Show average invoice value",
-     "msg": "its button sits 0px above the rule on top of the footer",
-     "stop": 1,
-     "crop": "390-06-flush.jpg",
-     "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)"
     },
     {
      "check": "nav",
@@ -345,33 +363,43 @@
      "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it"
     },
     {
-     "check": "text-only",
+     "check": "cta",
      "sev": "FAIL",
-     "sel": "section#view-ask",
-     "text": "Ask a billing question",
-     "msg": "the closing section is only text: no picture, icon, mock or effect in it",
-     "stop": 1,
-     "crop": "390-07-text-only.jpg",
-     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+     "sel": "main#main > div.topbar",
+     "text": "",
+     "msg": "the hero has no button (the nav's does not count)",
+     "stop": 0,
+     "crop": "390-03-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
     },
     {
-     "check": "button-styles",
+     "check": "heading-scale",
      "sev": "FAIL",
-     "sel": "form#ask-form > div.ask-box > button.btn.btn--primary",
-     "text": "Ask Axiom",
+     "sel": "div.panel > div.stats > div.stat:nth-of-type(1) > strong",
+     "text": "3",
+     "msg": "the figure \"3\" is set at 34px, larger than the section headings (h2 20px); 2 more like it",
+     "fix": "set figures at the h2 size or under: a stat reads as data, not as the heading",
      "stop": 1,
-     "msg": "one button style (soft, fill #2dd4bf, outline #2dd4bf) in 2 heights: 36, 44px (\"Ask Axiom\" 44px, \"Ask Axiom\" 36px)",
-     "crop": "390-08-button-styles.jpg",
-     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+     "crop": "390-07-heading-scale.jpg"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "section#view-ask > h2",
+     "text": "Ask a billing question",
+     "stop": 0,
+     "msg": "left edge at 34px, 18px off the page margin at 16px (20 elements, like p.lede)",
+     "crop": "390-04-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
     },
     {
      "check": "tap-size",
      "sev": "WARN",
      "sel": "button#topbar-ask",
      "text": "Ask Axiom",
-     "msg": "a 91x36px tap target: under the 44px a phone needs",
+     "msg": "a 89x36px tap target: under the 44px a phone needs",
      "stop": 0,
-     "crop": "390-03-tap-size.jpg",
+     "crop": "390-05-tap-size.jpg",
      "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
     },
     {
@@ -379,9 +407,9 @@
      "sev": "WARN",
      "sel": "button#palette-open",
      "text": "Cmd+K",
-     "msg": "a 54x24px tap target: under the 44px a phone needs",
+     "msg": "a 54x26px tap target: under the 44px a phone needs",
      "stop": 0,
-     "crop": "390-04-tap-size.jpg",
+     "crop": "390-06-tap-size.jpg",
      "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
     },
     {
@@ -389,30 +417,39 @@
      "sev": "WARN",
      "sel": "form#ask-form > div.chips > button.chip:nth-of-type(1)",
      "text": "Show refunds in Mumbai last month",
-     "msg": "a 251x36px tap target (and 3 more like it on this screen): under the 44px a phone needs",
+     "msg": "a 234x36px tap target (and 3 more like it on this screen): under the 44px a phone needs",
      "stop": 1,
-     "crop": "390-09-tap-size.jpg",
+     "crop": "390-08-tap-size.jpg",
      "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
     },
     {
-     "check": "section-gaps",
+     "check": "heading-scale",
      "sev": "WARN",
-     "sel": "main#main > div.topbar / section#view-ask",
+     "sel": "(the page)",
      "text": "",
-     "stop": 0,
-     "msg": "25px between these sections, -54% against the median 55px",
-     "crop": "390-05-section-gaps.jpg",
-     "fix": "use one gap between sections (all within 25% of each other)"
+     "msg": "the page has no visible h1",
+     "stop": null,
+     "fix": "size headings by level: the h1 largest, one size per level, each level below the one above"
     },
     {
-     "check": "section-gaps",
+     "check": "heading-scale",
      "sev": "WARN",
-     "sel": "section#view-ask / main#main > footer",
+     "sel": "div.panel > div.stats > div.stat:nth-of-type(4) > strong",
+     "text": "SQL",
+     "msg": "1 line of plain text set larger than the section headings (34px against h2 20px)",
+     "stop": 2,
+     "crop": "390-10-heading-scale.jpg",
+     "fix": "size headings by level: the h1 largest, one size per level, each level below the one above"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "main#main > div.topbar",
      "text": "",
      "stop": 1,
-     "msg": "84px between these sections, +54% against the median 55px",
-     "crop": "390-10-section-gaps.jpg",
-     "fix": "use one gap between sections (all within 25% of each other)"
+     "msg": "the nav changes form as the page scrolls: nav:nth-of-type(1) gives way to div.topbar",
+     "crop": "390-09-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
     }
    ],
    "glAsked": 0
@@ -451,21 +488,21 @@
   "errors": [],
   "findings": [
    {
-    "check": "fold-cut",
+    "check": "tap-size",
     "sev": "WARN",
     "sel": "button#topbar-ask",
     "text": "Ask Axiom",
-    "msg": "the hero's button \"Ask Axiom\" is cut by the bottom of the first screen (30px of its 36px below the fold)",
-    "crop": "narrow-320-01-fold-cut.jpg",
+    "msg": "a 89x36px tap target: under the 44px a phone needs",
+    "crop": "narrow-320-01-tap-size.jpg",
     "width": 320,
-    "fix": "size the hero so the heading ends above the fold, or starts below it"
+    "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
    },
    {
     "check": "tap-size",
     "sev": "WARN",
     "sel": "button#palette-open",
     "text": "Cmd+K",
-    "msg": "a 54x24px tap target: under the 44px a phone needs",
+    "msg": "a 54x26px tap target: under the 44px a phone needs",
     "crop": "narrow-320-02-tap-size.jpg",
     "width": 320,
     "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
@@ -475,7 +512,7 @@
     "sev": "WARN",
     "sel": "form#ask-form > div.chips > button.chip:nth-of-type(1)",
     "text": "Show refunds in Mumbai last month",
-    "msg": "a 251x36px tap target (and 3 more like it on this screen): under the 44px a phone needs",
+    "msg": "a 234x36px tap target (and 3 more like it on this screen): under the 44px a phone needs",
     "crop": "narrow-320-03-tap-size.jpg",
     "width": 320,
     "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box"
@@ -484,15 +521,15 @@
  },
  "counts": {
   "FAIL": 29,
-  "WARN": 15
+  "WARN": 19
  },
  "checks": {
-  "assets": "WARN",
+  "assets": "PASS",
   "shader-lint": "PASS",
   "gl-fallback": "PASS",
   "empty-visual": "PASS",
   "hero-fill": "FAIL",
-  "flush": "FAIL",
+  "flush": "PASS",
   "placeholder": "PASS",
   "sample-label": "PASS",
   "caption": "PASS",
@@ -508,7 +545,7 @@
   "tap-size": "WARN",
   "row-gap": "PASS",
   "cut-text": "PASS",
-  "fold-cut": "WARN",
+  "fold-cut": "PASS",
   "marquee": "PASS",
   "scroll-linked": "not checked",
   "scroll-reveal": "not checked",
@@ -518,7 +555,7 @@
   "hidden-content": "PASS",
   "webgl": "PASS",
   "no-visual": "PASS",
-  "text-only": "FAIL",
+  "text-only": "PASS",
   "card-visual": "PASS",
   "hidden-visual": "not checked",
   "card-family": "PASS",
@@ -528,21 +565,21 @@
   "ui-fit": "PASS",
   "ui-centre": "PASS",
   "dark-ground": "PASS",
-  "button-styles": "FAIL",
+  "button-styles": "PASS",
   "button-shape": "PASS",
-  "same-action": "FAIL",
+  "same-action": "PASS",
   "button-picture": "PASS",
-  "cta": "PASS",
+  "cta": "FAIL",
   "pricing-tiers": "PASS",
   "copy-headline": "PASS",
   "copy-fact": "PASS",
-  "copy-headings": "PASS",
+  "copy-headings": "WARN",
   "copy-buttons": "WARN",
-  "copy-actions": "PASS",
-  "heading-scale": "PASS",
+  "copy-actions": "WARN",
+  "heading-scale": "FAIL",
   "stagger": "PASS",
   "top-stagger": "PASS",
-  "off-grid": "PASS",
+  "off-grid": "FAIL",
   "col-edge": "PASS",
   "right-edge": "PASS",
   "centre-axis": "PASS",
@@ -551,7 +588,7 @@
   "text-contrast": "PASS",
   "body-size": "PASS",
   "busy-ground": "PASS",
-  "section-gaps": "WARN",
+  "section-gaps": "PASS",
   "proximity": "PASS",
   "hole": "PASS",
   "links": "PASS",
@@ -559,7 +596,7 @@
   "photo-upscale": "PASS",
   "photo-set": "PASS",
   "photo-credit": "PASS",
-  "nav-family": "PASS",
+  "nav-family": "WARN",
   "nav-labels": "PASS",
   "link-styles": "PASS",
   "heading-align": "PASS",
@@ -572,7 +609,7 @@
   "effects-fit": "PASS",
   "fade-cut": "PASS",
   "photo-weight": "PASS",
-  "copy-length": "PASS",
+  "copy-length": "WARN",
   "nav-current": "PASS",
   "progress-bar": "PASS",
   "photo-repeat": "PASS",
@@ -605,7 +642,7 @@
   "one-section": "FAIL",
   "one-heading": "PASS",
   "container-edges": "FAIL",
-  "row-lines": "PASS",
+  "row-lines": "FAIL",
   "split-pair": "PASS",
   "motion-layer": "PASS",
   "count-text": "PASS",
