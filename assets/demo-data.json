@@ -1,0 +1,1622 @@
+{
+  "health": {
+    "status": "ok",
+    "llm_provider": "offline",
+    "retrieval": "tfidf"
+  },
+  "ticketsList": {
+    "tickets": [
+      {
+        "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+        "id": "TKT-101",
+        "priority": "high",
+        "repo_area": "billing",
+        "status": "open",
+        "title": "Refund totals displayed 100x too large on dashboard"
+      },
+      {
+        "description": "SQL safety check rejects a valid query with a CASE expression in the SELECT list; sqlglot parses it fine but the validator flags it. Find the edge case in the validation logic and add a regression test.",
+        "id": "TKT-102",
+        "priority": "medium",
+        "repo_area": "analytics",
+        "status": "open",
+        "title": "SQL validation edge case: CASE expression wrongly rejected"
+      },
+      {
+        "description": "Router confidence thresholds (0.75 high / 0.45 medium) were set by guess. Re-tune them against the golden eval set and report measured accuracy and false-positive rate before and after.",
+        "id": "TKT-103",
+        "priority": "low",
+        "repo_area": "classifier",
+        "status": "open",
+        "title": "Tune router confidence thresholds against golden set"
+      },
+      {
+        "description": "audit.log grows without bound; add size-based rotation (keep 7 days) without losing any record. Call the support desk on [PHONE] before changing the log path.",
+        "id": "TKT-104",
+        "priority": "medium",
+        "repo_area": "audit",
+        "status": "open",
+        "title": "Audit log rotation missing"
+      },
+      {
+        "description": "A dispute answer leaked a customer email in the sources block. Audit every place the API returns text and make sure PII masking runs before any output is built, not after.",
+        "id": "TKT-105",
+        "priority": "high",
+        "repo_area": "guardrails",
+        "status": "open",
+        "title": "PII masking gap: email leaked in answer sources"
+      },
+      {
+        "description": "GET /metrics takes over 2s once the audit log passes 10k lines because it re-reads the whole file per request. Cache the counts or stream the file; measure before and after.",
+        "id": "TKT-106",
+        "priority": "low",
+        "repo_area": "metrics",
+        "status": "open",
+        "title": "Dashboard latency: /metrics re-reads full audit log"
+      }
+    ]
+  },
+  "disputesList": {
+    "disputes": [
+      {
+        "id": 1,
+        "reason": "wrong amount",
+        "reason_cluster": "wrong_amount",
+        "reason_cluster_label": "wrong amount",
+        "status": "open",
+        "opened_on": "2026-10-29",
+        "resolved_on": null,
+        "resolution": null,
+        "customer": {
+          "name": "Divya Menon",
+          "city": "Delhi",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 27,
+          "amount_paise": 2224266
+        }
+      },
+      {
+        "id": 2,
+        "reason": "unauthorised transaction",
+        "reason_cluster": "unauthorised_transaction",
+        "reason_cluster_label": "unauthorised transaction",
+        "status": "resolved",
+        "opened_on": "2026-09-28",
+        "resolved_on": "2026-10-07",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Aditya Rao",
+          "city": "Bengaluru",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 32,
+          "amount_paise": 1109733
+        }
+      },
+      {
+        "id": 3,
+        "reason": "service not delivered",
+        "reason_cluster": "service_not_delivered",
+        "reason_cluster_label": "service not delivered",
+        "status": "resolved",
+        "opened_on": "2026-12-07",
+        "resolved_on": "2026-12-11",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Rohan Iyer",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 31,
+          "amount_paise": 1908055
+        }
+      },
+      {
+        "id": 4,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-03",
+        "resolved_on": "2026-11-04",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Arjun Patel",
+          "city": "Delhi",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 14,
+          "amount_paise": 1031811
+        }
+      },
+      {
+        "id": 5,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-10-14",
+        "resolved_on": "2026-10-22",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Meera Joshi",
+          "city": "Chennai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 26,
+          "amount_paise": 271454
+        }
+      },
+      {
+        "id": 6,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "open",
+        "opened_on": "2026-08-22",
+        "resolved_on": null,
+        "resolution": null,
+        "customer": {
+          "name": "Priya Sharma",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 4,
+          "amount_paise": 1510668
+        }
+      },
+      {
+        "id": 7,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-07",
+        "resolved_on": "2026-11-09",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Kavya Singh",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 11,
+          "amount_paise": 1535217
+        }
+      },
+      {
+        "id": 8,
+        "reason": "duplicate charge",
+        "reason_cluster": "duplicate_billing",
+        "reason_cluster_label": "duplicate billing",
+        "status": "resolved",
+        "opened_on": "2026-08-18",
+        "resolved_on": "2026-08-22",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Sanjay Gupta",
+          "city": "Hyderabad",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 25,
+          "amount_paise": 676013
+        }
+      },
+      {
+        "id": 9,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-08-29",
+        "resolved_on": "2026-09-02",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Vikram Nair",
+          "city": "Pune",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 1,
+          "amount_paise": 32257
+        }
+      },
+      {
+        "id": 10,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-09-24",
+        "resolved_on": "2026-09-26",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Sanjay Gupta",
+          "city": "Hyderabad",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 13,
+          "amount_paise": 304483
+        }
+      }
+    ],
+    "reason_clusters": {
+      "wrong amount": 1,
+      "unauthorised transaction": 1,
+      "service not delivered": 1,
+      "refund delay": 6,
+      "duplicate billing": 1
+    }
+  },
+  "ask": {
+    "what were total refunds in mumbai last month": {
+      "request_id": "req_6036299933d6",
+      "route": "answered",
+      "answer": "Refunds in Mumbai from 2026-10-01 to 2026-10-31: \u20b9429.",
+      "message": null,
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds AS r JOIN invoices AS i ON r.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= '2026-10-01' AND r.refunded_on <= '2026-10-31' LIMIT 100",
+      "sources": {
+        "schema": [
+          {
+            "table": "refunds",
+            "description": "Refunds issued against invoices. Amounts in paise.",
+            "columns": [
+              "id",
+              "invoice_id",
+              "amount_paise",
+              "reason",
+              "refunded_on"
+            ],
+            "matched_columns": [],
+            "score": 1
+          }
+        ],
+        "past_queries": [
+          {
+            "question": "What were total refunds in Mumbai last month?",
+            "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= date('now', 'start of month', '-1 month') AND r.refunded_on < date('now', 'start of month')",
+            "score": 0.524
+          },
+          {
+            "question": "What is the refund rate?",
+            "sql": "WITH pay AS (SELECT COALESCE(SUM(p.amount_paise), 0) AS total FROM payments p), ref AS (SELECT COALESCE(SUM(r.amount_paise), 0) AS total FROM refunds r) SELECT CASE WHEN (SELECT total FROM pay) = 0 THEN 0.0 ELSE CAST((SELECT total FROM ref) AS REAL) / (SELECT total FROM pay) END AS refund_rate",
+            "score": 0.144
+          },
+          {
+            "question": "What is the dispute rate?",
+            "sql": "WITH dsp AS (SELECT COUNT(*) AS total FROM disputes d), inv AS (SELECT COUNT(*) AS total FROM invoices i) SELECT CASE WHEN (SELECT total FROM inv) = 0 THEN 0.0 ELSE CAST((SELECT total FROM dsp) AS REAL) / (SELECT total FROM inv) END AS dispute_rate",
+            "score": 0.122
+          }
+        ]
+      },
+      "confidence": 0.99,
+      "band": "high",
+      "metric": "refunds",
+      "validation": {
+        "empty_result": false,
+        "outliers": [],
+        "schema_conformant": true
+      },
+      "rows": [
+        {
+          "refunds": 42916
+        }
+      ]
+    },
+    "show me revenue by city": {
+      "request_id": "req_28bf2da8717f",
+      "route": "answered",
+      "answer": "Revenue by city:\n  Mumbai: \u20b990,308\n  Pune: \u20b963,783\n  Hyderabad: \u20b962,819\n  Bengaluru: \u20b953,032\n  Chennai: \u20b920,734\n  Kolkata: \u20b917,776\n  Delhi: \u20b915,123\n  Ahmedabad: \u20b910,980",
+      "message": null,
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": "WITH pay AS (SELECT c.city AS city, COALESCE(SUM(p.amount_paise), 0) AS total FROM payments AS p JOIN invoices AS i ON p.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE 1 = 1 GROUP BY c.city), ref AS (SELECT c.city AS city, COALESCE(SUM(r.amount_paise), 0) AS total FROM refunds AS r JOIN invoices AS i ON r.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE 1 = 1 GROUP BY c.city), cities AS (SELECT DISTINCT city FROM customers) SELECT cities.city AS city, COALESCE(pay.total, 0) - COALESCE(ref.total, 0) AS revenue FROM cities LEFT JOIN pay ON pay.city = cities.city LEFT JOIN ref ON ref.city = cities.city ORDER BY revenue DESC LIMIT 100",
+      "sources": {
+        "schema": [
+          {
+            "table": "customers",
+            "description": "Customers, one row per customer.",
+            "columns": [
+              "id",
+              "name",
+              "city",
+              "email",
+              "phone",
+              "account_number"
+            ],
+            "matched_columns": [
+              "city"
+            ],
+            "score": 1
+          }
+        ],
+        "past_queries": [
+          {
+            "question": "Show me revenue by city",
+            "sql": "WITH pay AS (SELECT c.city AS city, SUM(p.amount_paise) AS total FROM payments p JOIN invoices i ON p.invoice_id = i.id JOIN customers c ON i.customer_id = c.id GROUP BY c.city), ref AS (SELECT c.city AS city, SUM(r.amount_paise) AS total FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id GROUP BY c.city), cities AS (SELECT DISTINCT city FROM customers) SELECT cities.city AS city, COALESCE(pay.total, 0) - COALESCE(ref.total, 0) AS revenue FROM cities LEFT JOIN pay ON pay.city = cities.city LEFT JOIN ref ON ref.city = cities.city ORDER BY revenue DESC",
+            "score": 0.55
+          },
+          {
+            "question": "What were total refunds in Mumbai last month?",
+            "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= date('now', 'start of month', '-1 month') AND r.refunded_on < date('now', 'start of month')",
+            "score": 0.064
+          }
+        ]
+      },
+      "confidence": 0.99,
+      "band": "high",
+      "metric": "revenue",
+      "validation": {
+        "empty_result": false,
+        "outliers": [],
+        "schema_conformant": true
+      },
+      "rows": [
+        {
+          "city": "Mumbai",
+          "revenue": 9030776
+        },
+        {
+          "city": "Pune",
+          "revenue": 6378301
+        },
+        {
+          "city": "Hyderabad",
+          "revenue": 6281888
+        },
+        {
+          "city": "Bengaluru",
+          "revenue": 5303199
+        },
+        {
+          "city": "Chennai",
+          "revenue": 2073435
+        },
+        {
+          "city": "Kolkata",
+          "revenue": 1777573
+        },
+        {
+          "city": "Delhi",
+          "revenue": 1512294
+        },
+        {
+          "city": "Ahmedabad",
+          "revenue": 1097952
+        }
+      ]
+    },
+    "hello": {
+      "request_id": "req_6b1877f391f9",
+      "route": "clarified",
+      "answer": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "message": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 0.0,
+      "band": "low",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    },
+    "tell me a joke": {
+      "request_id": "req_6091a263ecfa",
+      "route": "clarified",
+      "answer": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "message": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 1.0,
+      "band": "low",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    },
+    "draft a resolution for dispute dsp-7": {
+      "request_id": "req_decd7d06b4bc",
+      "route": "disputes",
+      "answer": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "message": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "matched_ticket": null,
+      "matched_dispute": {
+        "id": 7,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-07",
+        "resolved_on": "2026-11-09",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Kavya Singh",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 11,
+          "amount_paise": 1535217
+        }
+      },
+      "action": "POST /disputes/7/resolve",
+      "summary": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 0.799,
+      "band": "high",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    },
+    "what is the average invoice value": {
+      "request_id": "req_9bb11b049c03",
+      "route": "answered",
+      "answer": "Avg Invoice Value: \u20b912,810.",
+      "message": null,
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": "SELECT AVG(i.amount_paise) AS avg_invoice_value FROM invoices AS i JOIN customers AS c ON i.customer_id = c.id WHERE 1 = 1 LIMIT 100",
+      "sources": {
+        "schema": [],
+        "past_queries": [
+          {
+            "question": "What is the average invoice value?",
+            "sql": "SELECT AVG(i.amount_paise) AS avg_invoice_value FROM invoices i",
+            "score": 0.714
+          },
+          {
+            "question": "How many invoices were paid in October?",
+            "sql": "SELECT COUNT(*) AS invoice_count FROM invoices i WHERE i.status = 'paid' AND strftime('%m', i.issued_on) = '10'",
+            "score": 0.053
+          },
+          {
+            "question": "Which customers have the most refunds?",
+            "sql": "SELECT c.name AS customer, COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id GROUP BY c.id, c.name ORDER BY refunds DESC LIMIT 5",
+            "score": 0.028
+          }
+        ]
+      },
+      "confidence": 0.99,
+      "band": "high",
+      "metric": "avg_invoice_value",
+      "validation": {
+        "empty_result": false,
+        "outliers": [],
+        "schema_conformant": true
+      },
+      "rows": [
+        {
+          "avg_invoice_value": 1281005.85
+        }
+      ]
+    },
+    "fallback": {
+      "request_id": "req_6b1877f391f9",
+      "route": "clarified",
+      "answer": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "message": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 0.0,
+      "band": "low",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    }
+  },
+  "ticketWorked": {
+    "TKT-101": {
+      "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+      "id": "TKT-101",
+      "priority": "high",
+      "repo_area": "billing",
+      "status": "awaiting_review",
+      "title": "Refund totals displayed 100x too large on dashboard",
+      "plan": [
+        "Reproduce the issue: billing \u2014 refund totals displayed 100x too large on dashboard.",
+        "Read billing.py and the ADRs it references before changing anything.",
+        "Check the money path against ADR-001 (paise in, rupees out).",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "billing.py",
+          "score": 0.284,
+          "lines": [
+            1,
+            3,
+            4,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Billing service (sample codebase for the Axiom dev slice)."
+        },
+        {
+          "file": "test_billing.py",
+          "score": 0.238,
+          "lines": [
+            1,
+            3,
+            7,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Existing tests for the billing service."
+        },
+        {
+          "file": "docs/adr-001.md",
+          "score": 0.174,
+          "lines": [
+            1,
+            5,
+            6,
+            10,
+            11
+          ],
+          "excerpt": "# ADR-001: Money in paise, display in rupees"
+        }
+      ],
+      "proposed_test": "from billing import refund_summary\n\n\ndef test_refund_summary_displays_rupees():\n    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "diff": "--- a/billing.py\n+++ b/billing.py\n@@ - refund_summary: format the paise total as rupees @@\n-    return f\"Total refunds: Rs {total:,.2f}\"\n+    return f\"Total refunds: {format_inr(total)}\"\n\n--- a/test_billing.py (new test)\n+++ b/test_billing.py\n+from billing import refund_summary\n+\n+\n+def test_refund_summary_displays_rupees():\n+    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n+    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "review_summary": "Review proposal for TKT-101 (Refund totals displayed 100x too large on dashboard): 7 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+    },
+    "TKT-102": {
+      "description": "SQL safety check rejects a valid query with a CASE expression in the SELECT list; sqlglot parses it fine but the validator flags it. Find the edge case in the validation logic and add a regression test.",
+      "id": "TKT-102",
+      "priority": "medium",
+      "repo_area": "analytics",
+      "status": "awaiting_review",
+      "title": "SQL validation edge case: CASE expression wrongly rejected",
+      "plan": [
+        "Reproduce the issue: analytics \u2014 sql validation edge case: case expression wrongly rejected.",
+        "Read test_billing.py and the ADRs it references before changing anything.",
+        "Check the query parses under sqlglot before touching validation.",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "test_billing.py",
+          "score": 0.032,
+          "lines": [
+            3,
+            10,
+            14,
+            18,
+            22
+          ],
+          "excerpt": "Note: no test covers refund_summary's display value \u2014 that gap is"
+        },
+        {
+          "file": "README.md",
+          "score": 0.025,
+          "lines": [
+            9,
+            16
+          ],
+          "excerpt": "- `test_billing.py` \u2014 existing tests (no display-value test for refunds)"
+        }
+      ],
+      "proposed_test": "# Proposed test for TKT-102 (analytics).\n# Captures the expected behaviour before the fix lands.\n\n\ndef test_sql_validation_edge_case_case_expression_wrongly():\n    # TODO: assert the fixed behaviour for: SQL validation edge case: CASE expression wrongly rejected\n    raise NotImplementedError('fill in from the plan steps above')\n",
+      "diff": "# Diff proposal for TKT-102: no source change drafted yet \u2014\n# the plan and the proposed test below are the reviewable artefacts.\n# The source change is drafted by the reviewer from the plan steps.\n\n--- a/test file (proposed test)\n+++ b/test file\n+# Proposed test for TKT-102 (analytics).\n+# Captures the expected behaviour before the fix lands.\n+\n+\n+def test_sql_validation_edge_case_case_expression_wrongly():\n+    # TODO: assert the fixed behaviour for: SQL validation edge case: CASE expression wrongly rejected\n+    raise NotImplementedError('fill in from the plan steps above')\n",
+      "review_summary": "Review proposal for TKT-102 (SQL validation edge case: CASE expression wrongly rejected): 7 plan steps, 2 code files read, 1 proposed test, diff attached. Awaiting human review."
+    },
+    "TKT-103": {
+      "description": "Router confidence thresholds (0.75 high / 0.45 medium) were set by guess. Re-tune them against the golden eval set and report measured accuracy and false-positive rate before and after.",
+      "id": "TKT-103",
+      "priority": "low",
+      "repo_area": "classifier",
+      "status": "awaiting_review",
+      "title": "Tune router confidence thresholds against golden set",
+      "plan": [
+        "Reproduce the issue: classifier \u2014 tune router confidence thresholds against golden set.",
+        "Read billing.py and the ADRs it references before changing anything.",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "billing.py",
+          "score": 0.014,
+          "lines": [
+            39,
+            40
+          ],
+          "excerpt": "\"\"\"Remaining balance after a refund, in paise. Raises on over-refund.\"\"\""
+        }
+      ],
+      "proposed_test": "# Proposed test for TKT-103 (classifier).\n# Captures the expected behaviour before the fix lands.\n\n\ndef test_tune_router_confidence_thresholds_against_golden():\n    # TODO: assert the fixed behaviour for: Tune router confidence thresholds against golden set\n    raise NotImplementedError('fill in from the plan steps above')\n",
+      "diff": "# Diff proposal for TKT-103: no source change drafted yet \u2014\n# the plan and the proposed test below are the reviewable artefacts.\n# The source change is drafted by the reviewer from the plan steps.\n\n--- a/test file (proposed test)\n+++ b/test file\n+# Proposed test for TKT-103 (classifier).\n+# Captures the expected behaviour before the fix lands.\n+\n+\n+def test_tune_router_confidence_thresholds_against_golden():\n+    # TODO: assert the fixed behaviour for: Tune router confidence thresholds against golden set\n+    raise NotImplementedError('fill in from the plan steps above')\n",
+      "review_summary": "Review proposal for TKT-103 (Tune router confidence thresholds against golden set): 6 plan steps, 1 code files read, 1 proposed test, diff attached. Awaiting human review."
+    },
+    "TKT-104": {
+      "description": "audit.log grows without bound; add size-based rotation (keep 7 days) without losing any record. Call the support desk on [PHONE] before changing the log path.",
+      "id": "TKT-104",
+      "priority": "medium",
+      "repo_area": "audit",
+      "status": "awaiting_review",
+      "title": "Audit log rotation missing",
+      "plan": [
+        "Reproduce the issue: audit \u2014 audit log rotation missing.",
+        "Read docs/adr-002.md and the ADRs it references before changing anything.",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "docs/adr-002.md",
+          "score": 0.028,
+          "lines": [
+            10
+          ],
+          "excerpt": "Payment webhooks retry. Without idempotency a retried webhook double-refunds"
+        },
+        {
+          "file": "docs/adr-001.md",
+          "score": 0.015,
+          "lines": [
+            15
+          ],
+          "excerpt": "Any code that formats a paise value directly as rupees (e.g. an f-string"
+        }
+      ],
+      "proposed_test": "# Proposed test for TKT-104 (audit).\n# Captures the expected behaviour before the fix lands.\n\n\ndef test_audit_log_rotation_missing():\n    # TODO: assert the fixed behaviour for: Audit log rotation missing\n    raise NotImplementedError('fill in from the plan steps above')\n",
+      "diff": "# Diff proposal for TKT-104: no source change drafted yet \u2014\n# the plan and the proposed test below are the reviewable artefacts.\n# The source change is drafted by the reviewer from the plan steps.\n\n--- a/test file (proposed test)\n+++ b/test file\n+# Proposed test for TKT-104 (audit).\n+# Captures the expected behaviour before the fix lands.\n+\n+\n+def test_audit_log_rotation_missing():\n+    # TODO: assert the fixed behaviour for: Audit log rotation missing\n+    raise NotImplementedError('fill in from the plan steps above')\n",
+      "review_summary": "Review proposal for TKT-104 (Audit log rotation missing): 6 plan steps, 2 code files read, 1 proposed test, diff attached. Awaiting human review."
+    },
+    "TKT-105": {
+      "description": "A dispute answer leaked a customer email in the sources block. Audit every place the API returns text and make sure PII masking runs before any output is built, not after.",
+      "id": "TKT-105",
+      "priority": "high",
+      "repo_area": "guardrails",
+      "status": "awaiting_review",
+      "title": "PII masking gap: email leaked in answer sources",
+      "plan": [
+        "Reproduce the issue: guardrails \u2014 pii masking gap: email leaked in answer sources.",
+        "Read docs/adr-001.md and the ADRs it references before changing anything.",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "docs/adr-001.md",
+          "score": 0.031,
+          "lines": [
+            11,
+            15
+          ],
+          "excerpt": "means a display bug is a one-line fix, not a hunt through every caller."
+        },
+        {
+          "file": "docs/adr-002.md",
+          "score": 0.029,
+          "lines": [
+            6,
+            11
+          ],
+          "excerpt": "request returns the original result instead of refunding twice."
+        },
+        {
+          "file": "test_billing.py",
+          "score": 0.009,
+          "lines": [
+            3
+          ],
+          "excerpt": "Note: no test covers refund_summary's display value \u2014 that gap is"
+        }
+      ],
+      "proposed_test": "# Proposed test for TKT-105 (guardrails).\n# Captures the expected behaviour before the fix lands.\n\n\ndef test_pii_masking_gap_email_leaked_in_answer_sources():\n    # TODO: assert the fixed behaviour for: PII masking gap: email leaked in answer sources\n    raise NotImplementedError('fill in from the plan steps above')\n",
+      "diff": "# Diff proposal for TKT-105: no source change drafted yet \u2014\n# the plan and the proposed test below are the reviewable artefacts.\n# The source change is drafted by the reviewer from the plan steps.\n\n--- a/test file (proposed test)\n+++ b/test file\n+# Proposed test for TKT-105 (guardrails).\n+# Captures the expected behaviour before the fix lands.\n+\n+\n+def test_pii_masking_gap_email_leaked_in_answer_sources():\n+    # TODO: assert the fixed behaviour for: PII masking gap: email leaked in answer sources\n+    raise NotImplementedError('fill in from the plan steps above')\n",
+      "review_summary": "Review proposal for TKT-105 (PII masking gap: email leaked in answer sources): 6 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+    },
+    "TKT-106": {
+      "description": "GET /metrics takes over 2s once the audit log passes 10k lines because it re-reads the whole file per request. Cache the counts or stream the file; measure before and after.",
+      "id": "TKT-106",
+      "priority": "low",
+      "repo_area": "metrics",
+      "status": "awaiting_review",
+      "title": "Dashboard latency: /metrics re-reads full audit log",
+      "plan": [
+        "Reproduce the issue: metrics \u2014 dashboard latency: /metrics re-reads full audit log.",
+        "Read docs/adr-002.md and the ADRs it references before changing anything.",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "docs/adr-002.md",
+          "score": 0.014,
+          "lines": [
+            6
+          ],
+          "excerpt": "request returns the original result instead of refunding twice."
+        },
+        {
+          "file": "billing.py",
+          "score": 0.013,
+          "lines": [
+            22,
+            39
+          ],
+          "excerpt": "\"\"\"One-line refund total for the dashboard."
+        },
+        {
+          "file": "test_billing.py",
+          "score": 0.011,
+          "lines": [
+            26,
+            31
+          ],
+          "excerpt": "def test_apply_refund_over_refund_raises():"
+        }
+      ],
+      "proposed_test": "# Proposed test for TKT-106 (metrics).\n# Captures the expected behaviour before the fix lands.\n\n\ndef test_dashboard_latency_metrics_re_reads_full_audit_lo():\n    # TODO: assert the fixed behaviour for: Dashboard latency: /metrics re-reads full audit log\n    raise NotImplementedError('fill in from the plan steps above')\n",
+      "diff": "# Diff proposal for TKT-106: no source change drafted yet \u2014\n# the plan and the proposed test below are the reviewable artefacts.\n# The source change is drafted by the reviewer from the plan steps.\n\n--- a/test file (proposed test)\n+++ b/test file\n+# Proposed test for TKT-106 (metrics).\n+# Captures the expected behaviour before the fix lands.\n+\n+\n+def test_dashboard_latency_metrics_re_reads_full_audit_lo():\n+    # TODO: assert the fixed behaviour for: Dashboard latency: /metrics re-reads full audit log\n+    raise NotImplementedError('fill in from the plan steps above')\n",
+      "review_summary": "Review proposal for TKT-106 (Dashboard latency: /metrics re-reads full audit log): 6 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+    }
+  },
+  "ticketApproved": {
+    "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+    "id": "TKT-101",
+    "priority": "high",
+    "repo_area": "billing",
+    "status": "approved",
+    "title": "Refund totals displayed 100x too large on dashboard",
+    "plan": [
+      "Reproduce the issue: billing \u2014 refund totals displayed 100x too large on dashboard.",
+      "Read billing.py and the ADRs it references before changing anything.",
+      "Check the money path against ADR-001 (paise in, rupees out).",
+      "Write a failing test that captures the expected behaviour.",
+      "Implement the fix in the smallest change that satisfies the test.",
+      "Run the existing test suite plus the new test.",
+      "Submit the diff for human review \u2014 no change ships without approval."
+    ],
+    "code_read": [
+      {
+        "file": "billing.py",
+        "score": 0.284,
+        "lines": [
+          1,
+          3,
+          4,
+          10,
+          11
+        ],
+        "excerpt": "\"\"\"Billing service (sample codebase for the Axiom dev slice)."
+      },
+      {
+        "file": "test_billing.py",
+        "score": 0.238,
+        "lines": [
+          1,
+          3,
+          7,
+          10,
+          11
+        ],
+        "excerpt": "\"\"\"Existing tests for the billing service."
+      },
+      {
+        "file": "docs/adr-001.md",
+        "score": 0.174,
+        "lines": [
+          1,
+          5,
+          6,
+          10,
+          11
+        ],
+        "excerpt": "# ADR-001: Money in paise, display in rupees"
+      }
+    ],
+    "proposed_test": "from billing import refund_summary\n\n\ndef test_refund_summary_displays_rupees():\n    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+    "diff": "--- a/billing.py\n+++ b/billing.py\n@@ - refund_summary: format the paise total as rupees @@\n-    return f\"Total refunds: Rs {total:,.2f}\"\n+    return f\"Total refunds: {format_inr(total)}\"\n\n--- a/test_billing.py (new test)\n+++ b/test_billing.py\n+from billing import refund_summary\n+\n+\n+def test_refund_summary_displays_rupees():\n+    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n+    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+    "review_summary": "Review proposal for TKT-101 (Refund totals displayed 100x too large on dashboard): 7 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+  },
+  "disputeResolve": {
+    "1": {
+      "dispute": {
+        "id": 1,
+        "reason": "wrong amount",
+        "reason_cluster": "wrong_amount",
+        "reason_cluster_label": "wrong amount",
+        "status": "open",
+        "opened_on": "2026-10-29",
+        "resolved_on": null,
+        "resolution": null,
+        "customer": {
+          "name": "Divya Menon",
+          "city": "Delhi",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 27,
+          "amount_paise": 2224266
+        }
+      },
+      "reason_cluster": "wrong amount",
+      "precedents": [
+        {
+          "id": "DSP-P08",
+          "reason": "wrong amount",
+          "resolution": "Charged the annual price instead of monthly; corrected the invoice and refunded the difference.",
+          "score": 0.339
+        },
+        {
+          "id": "DSP-P07",
+          "reason": "wrong amount",
+          "resolution": "Invoice corrected to the contracted price and the overcharge refunded; billing run re-checked for the same error.",
+          "score": 0.31
+        },
+        {
+          "id": "DSP-P09",
+          "reason": "wrong amount",
+          "resolution": "Usage tier miscalculated; invoice re-issued at the correct tier and the excess refunded with an apology credit.",
+          "score": 0.281
+        }
+      ],
+      "citations": [
+        "DSP-P08",
+        "DSP-P07",
+        "DSP-P09"
+      ],
+      "draft_resolution": "Draft resolution for dispute 1 (wrong amount, \u20b922,243): following precedent DSP-P08, DSP-P07, DSP-P09 \u2014 Charged the annual price instead of monthly; corrected the invoice and refunded the difference. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "2": {
+      "dispute": {
+        "id": 2,
+        "reason": "unauthorised transaction",
+        "reason_cluster": "unauthorised_transaction",
+        "reason_cluster_label": "unauthorised transaction",
+        "status": "resolved",
+        "opened_on": "2026-09-28",
+        "resolved_on": "2026-10-07",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Aditya Rao",
+          "city": "Bengaluru",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 32,
+          "amount_paise": 1109733
+        }
+      },
+      "reason_cluster": "unauthorised transaction",
+      "precedents": [],
+      "citations": [],
+      "draft_resolution": "No precedent found above the match threshold for this unauthorised transaction dispute \u2014 human review required. No resolution drafted.",
+      "human_review": true
+    },
+    "3": {
+      "dispute": {
+        "id": 3,
+        "reason": "service not delivered",
+        "reason_cluster": "service_not_delivered",
+        "reason_cluster_label": "service not delivered",
+        "status": "resolved",
+        "opened_on": "2026-12-07",
+        "resolved_on": "2026-12-11",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Rohan Iyer",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 31,
+          "amount_paise": 1908055
+        }
+      },
+      "reason_cluster": "service not delivered",
+      "precedents": [
+        {
+          "id": "DSP-P12",
+          "reason": "service not delivered",
+          "resolution": "Feature flag was off for the account; flag enabled, service delivered, and one month credited for the delay.",
+          "score": 0.532
+        },
+        {
+          "id": "DSP-P10",
+          "reason": "service not delivered",
+          "resolution": "Service was never provisioned; full refund issued and the provisioning job re-run for the customer.",
+          "score": 0.501
+        },
+        {
+          "id": "DSP-P11",
+          "reason": "service not delivered",
+          "resolution": "Onboarding call never happened; refund issued and a new onboarding slot booked.",
+          "score": 0.311
+        }
+      ],
+      "citations": [
+        "DSP-P12",
+        "DSP-P10",
+        "DSP-P11"
+      ],
+      "draft_resolution": "Draft resolution for dispute 3 (service not delivered, \u20b919,081): following precedent DSP-P12, DSP-P10, DSP-P11 \u2014 Feature flag was off for the account; flag enabled, service delivered, and one month credited for the delay. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "4": {
+      "dispute": {
+        "id": 4,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-03",
+        "resolved_on": "2026-11-04",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Arjun Patel",
+          "city": "Delhi",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 14,
+          "amount_paise": 1031811
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 4 (subscription cancelled after payment, \u20b910,318): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "5": {
+      "dispute": {
+        "id": 5,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-10-14",
+        "resolved_on": "2026-10-22",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Meera Joshi",
+          "city": "Chennai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 26,
+          "amount_paise": 271454
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 5 (subscription cancelled after payment, \u20b92,715): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "6": {
+      "dispute": {
+        "id": 6,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "open",
+        "opened_on": "2026-08-22",
+        "resolved_on": null,
+        "resolution": null,
+        "customer": {
+          "name": "Priya Sharma",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 4,
+          "amount_paise": 1510668
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 6 (subscription cancelled after payment, \u20b915,107): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "7": {
+      "dispute": {
+        "id": 7,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-07",
+        "resolved_on": "2026-11-09",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Kavya Singh",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 11,
+          "amount_paise": 1535217
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 7 (subscription cancelled after payment, \u20b915,352): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "8": {
+      "dispute": {
+        "id": 8,
+        "reason": "duplicate charge",
+        "reason_cluster": "duplicate_billing",
+        "reason_cluster_label": "duplicate billing",
+        "status": "resolved",
+        "opened_on": "2026-08-18",
+        "resolved_on": "2026-08-22",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Sanjay Gupta",
+          "city": "Hyderabad",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 25,
+          "amount_paise": 676013
+        }
+      },
+      "reason_cluster": "duplicate billing",
+      "precedents": [
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.607
+        },
+        {
+          "id": "DSP-P01",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the duplicate charge; idempotency key added so the webhook retry cannot double-refund.",
+          "score": 0.542
+        },
+        {
+          "id": "DSP-P02",
+          "reason": "duplicate billing",
+          "resolution": "Duplicate invoice voided and refund issued; customer confirmed the credit on the next statement.",
+          "score": 0.49
+        }
+      ],
+      "citations": [
+        "DSP-P03",
+        "DSP-P01",
+        "DSP-P02"
+      ],
+      "draft_resolution": "Draft resolution for dispute 8 (duplicate charge, \u20b96,760): following precedent DSP-P03, DSP-P01, DSP-P02 \u2014 Refund issued for the second charge; duplicate payment flagged in the ledger for review. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "9": {
+      "dispute": {
+        "id": 9,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-08-29",
+        "resolved_on": "2026-09-02",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Vikram Nair",
+          "city": "Pune",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 1,
+          "amount_paise": 32257
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 9 (subscription cancelled after payment, \u20b9323): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    },
+    "10": {
+      "dispute": {
+        "id": 10,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-09-24",
+        "resolved_on": "2026-09-26",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Sanjay Gupta",
+          "city": "Hyderabad",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 13,
+          "amount_paise": 304483
+        }
+      },
+      "reason_cluster": "refund delay",
+      "precedents": [
+        {
+          "id": "DSP-P05",
+          "reason": "refund delay",
+          "resolution": "Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer.",
+          "score": 0.212
+        },
+        {
+          "id": "DSP-P03",
+          "reason": "duplicate billing",
+          "resolution": "Refund issued for the second charge; duplicate payment flagged in the ledger for review.",
+          "score": 0.166
+        },
+        {
+          "id": "DSP-P04",
+          "reason": "refund delay",
+          "resolution": "Refund had been queued but not released; released manually and customer notified with the refund reference.",
+          "score": 0.137
+        }
+      ],
+      "citations": [
+        "DSP-P05",
+        "DSP-P03",
+        "DSP-P04"
+      ],
+      "draft_resolution": "Draft resolution for dispute 10 (subscription cancelled after payment, \u20b93,045): following precedent DSP-P05, DSP-P03, DSP-P04 \u2014 Refund approved after the 7-day hold expired; amount credited within 2 business days and confirmed by the customer. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    }
+  },
+  "router": {
+    "confidence_distribution": {
+      "high": 30,
+      "low": 10,
+      "medium": 1
+    },
+    "domains": {
+      "analytics": 22,
+      "unknown": 10,
+      "dev": 4,
+      "disputes": 5
+    },
+    "golden_router_accuracy": 1.0,
+    "golden_false_positive_rate": 0.0,
+    "golden_runs": 30
+  },
+  "metrics": {
+    "total_questions": 41,
+    "answered": 21,
+    "routed_elsewhere": 20,
+    "autonomy_rate": 0.5121951219512195,
+    "routing_accuracy_golden": 1.0,
+    "analytics_correct_golden": 6,
+    "sql_validation_correct_golden": 4
+  },
+  "schema": {
+    "metrics": {
+      "avg_invoice_value": {
+        "definition": "Average invoice amount in the given period.",
+        "formula": "AVG(invoices.amount_paise)",
+        "synonyms": [
+          "average invoice value",
+          "avg invoice",
+          "mean invoice value",
+          "average invoice amount"
+        ],
+        "unit": "INR"
+      },
+      "dispute_rate": {
+        "definition": "Disputes opened as a share of invoices issued: COUNT(disputes) / COUNT(invoices).",
+        "formula": "COUNT(disputes) / COUNT(invoices)",
+        "synonyms": [
+          "dispute rate",
+          "dispute ratio"
+        ],
+        "unit": "ratio"
+      },
+      "gross_revenue": {
+        "definition": "Gross revenue before refunds: total payments received, ignoring refunds.",
+        "formula": "SUM(payments.amount_paise)",
+        "synonyms": [
+          "gross revenue",
+          "gross sales",
+          "gross turnover"
+        ],
+        "unit": "INR"
+      },
+      "refund_rate": {
+        "definition": "Refunds as a share of payments received: SUM(refunds) / SUM(payments).",
+        "formula": "SUM(refunds.amount_paise) / SUM(payments.amount_paise)",
+        "synonyms": [
+          "refund rate",
+          "refund ratio",
+          "refund percentage"
+        ],
+        "unit": "ratio"
+      },
+      "refunds": {
+        "definition": "Total amount refunded to customers in the given period.",
+        "formula": "SUM(refunds.amount_paise)",
+        "synonyms": [
+          "refund",
+          "refunded amount",
+          "total refunds",
+          "money refunded"
+        ],
+        "unit": "INR"
+      },
+      "revenue": {
+        "definition": "Net revenue after refunds: total payments received minus total refunds, in the given period. Amounts in paise; divide by 100 for rupees.",
+        "formula": "SUM(payments.amount_paise) - SUM(refunds.amount_paise)",
+        "synonyms": [
+          "net revenue",
+          "sales",
+          "turnover",
+          "income"
+        ],
+        "unit": "INR"
+      }
+    },
+    "tables": {
+      "customers": {
+        "columns": [
+          {
+            "description": "Customer id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer name",
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "description": "Customer city",
+            "name": "city",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: email address",
+            "name": "email",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: phone number",
+            "name": "phone",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: account number",
+            "name": "account_number",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Customers, one row per customer."
+      },
+      "disputes": {
+        "columns": [
+          {
+            "description": "Dispute id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer id",
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Dispute reason",
+            "name": "reason",
+            "type": "TEXT"
+          },
+          {
+            "description": "open, resolved, or escalated",
+            "name": "status",
+            "type": "TEXT"
+          },
+          {
+            "description": "Opened date, YYYY-MM-DD",
+            "name": "opened_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "Resolved date, YYYY-MM-DD or null",
+            "name": "resolved_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "How it was resolved, or null",
+            "name": "resolution",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Charge disputes opened by customers."
+      },
+      "invoices": {
+        "columns": [
+          {
+            "description": "Invoice id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer id",
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Issue date, YYYY-MM-DD",
+            "name": "issued_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "paid, pending, or overdue",
+            "name": "status",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Invoices issued to customers. Amounts in paise."
+      },
+      "payments": {
+        "columns": [
+          {
+            "description": "Payment id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Payment amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Payment date, YYYY-MM-DD",
+            "name": "paid_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "upi, card, or netbanking",
+            "name": "method",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Payments received against invoices. Amounts in paise."
+      },
+      "refunds": {
+        "columns": [
+          {
+            "description": "Refund id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Refund amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Refund reason",
+            "name": "reason",
+            "type": "TEXT"
+          },
+          {
+            "description": "Refund date, YYYY-MM-DD",
+            "name": "refunded_on",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Refunds issued against invoices. Amounts in paise."
+      }
+    }
+  }
+}
