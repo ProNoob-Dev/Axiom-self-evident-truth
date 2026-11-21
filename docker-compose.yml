@@ -1,0 +1,30 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8125:8125"
+    environment:
+      - BILLING_DB_PATH=/app/data/billing.sqlite
+      # Set DATABASE_URL + AZURE_OPENAI_* to enable pgvector / LLM paths.
+      # - DATABASE_URL=postgresql://axiom:axiom@postgres:5432/axiom
+      # - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      # - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      # - AZURE_OPENAI_DEPLOYMENT=${AZURE_OPENAI_DEPLOYMENT}
+    volumes:
+      - ./data:/app/data
+
+  # Postgres + pgvector for the future retrieval upgrade. The API runs on
+  # SQLite + TF-IDF until DATABASE_URL is set, so this service is optional.
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_USER=axiom
+      - POSTGRES_PASSWORD=axiom
+      - POSTGRES_DB=axiom
+    ports:
+      - "5432:5432"
+    volumes:
+      - axiom_pgdata:/var/lib/postgresql/data
+
+volumes:
+  axiom_pgdata:

@@ -1,0 +1,435 @@
+{
+  "health": {
+    "status": "ok",
+    "llm_provider": "offline",
+    "retrieval": "tfidf"
+  },
+  "ask_refunds_mumbai_last_month": {
+    "request_id": "req_cba66849076b",
+    "route": "answered",
+    "answer": "Refunds in Mumbai from 2026-10-01 to 2026-10-31: \u20b9429.",
+    "message": null,
+    "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds AS r JOIN invoices AS i ON r.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= '2026-10-01' AND r.refunded_on <= '2026-10-31' LIMIT 100",
+    "sources": {
+      "schema": [
+        {
+          "table": "refunds",
+          "description": "Refunds issued against invoices. Amounts in paise.",
+          "columns": [
+            "id",
+            "invoice_id",
+            "amount_paise",
+            "reason",
+            "refunded_on"
+          ],
+          "matched_columns": [],
+          "score": 1
+        }
+      ],
+      "past_queries": [
+        {
+          "question": "What were total refunds in Mumbai last month?",
+          "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= date('now', 'start of month', '-1 month') AND r.refunded_on < date('now', 'start of month')",
+          "score": 0.524
+        },
+        {
+          "question": "What is the refund rate?",
+          "sql": "WITH pay AS (SELECT COALESCE(SUM(p.amount_paise), 0) AS total FROM payments p), ref AS (SELECT COALESCE(SUM(r.amount_paise), 0) AS total FROM refunds r) SELECT CASE WHEN (SELECT total FROM pay) = 0 THEN 0.0 ELSE CAST((SELECT total FROM ref) AS REAL) / (SELECT total FROM pay) END AS refund_rate",
+          "score": 0.144
+        },
+        {
+          "question": "What is the dispute rate?",
+          "sql": "WITH dsp AS (SELECT COUNT(*) AS total FROM disputes d), inv AS (SELECT COUNT(*) AS total FROM invoices i) SELECT CASE WHEN (SELECT total FROM inv) = 0 THEN 0.0 ELSE CAST((SELECT total FROM dsp) AS REAL) / (SELECT total FROM inv) END AS dispute_rate",
+          "score": 0.122
+        }
+      ]
+    },
+    "confidence": 0.99,
+    "band": "high",
+    "metric": "refunds",
+    "validation": {
+      "empty_result": false,
+      "outliers": [],
+      "schema_conformant": true
+    },
+    "rows": [
+      {
+        "refunds": 42916
+      }
+    ]
+  },
+  "ask_revenue_by_city": {
+    "request_id": "req_fdc8fa81f4b9",
+    "route": "answered",
+    "answer": "Revenue by city:\n  Mumbai: \u20b990,308\n  Pune: \u20b963,783\n  Hyderabad: \u20b962,819\n  Bengaluru: \u20b953,032\n  Chennai: \u20b920,734\n  Kolkata: \u20b917,776\n  Delhi: \u20b915,123\n  Ahmedabad: \u20b910,980",
+    "message": null,
+    "sql": "WITH pay AS (SELECT c.city AS city, COALESCE(SUM(p.amount_paise), 0) AS total FROM payments AS p JOIN invoices AS i ON p.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE 1 = 1 GROUP BY c.city), ref AS (SELECT c.city AS city, COALESCE(SUM(r.amount_paise), 0) AS total FROM refunds AS r JOIN invoices AS i ON r.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE 1 = 1 GROUP BY c.city), cities AS (SELECT DISTINCT city FROM customers) SELECT cities.city AS city, COALESCE(pay.total, 0) - COALESCE(ref.total, 0) AS revenue FROM cities LEFT JOIN pay ON pay.city = cities.city LEFT JOIN ref ON ref.city = cities.city ORDER BY revenue DESC LIMIT 100",
+    "sources": {
+      "schema": [
+        {
+          "table": "customers",
+          "description": "Customers, one row per customer.",
+          "columns": [
+            "id",
+            "name",
+            "city",
+            "email",
+            "phone",
+            "account_number"
+          ],
+          "matched_columns": [
+            "city"
+          ],
+          "score": 1
+        }
+      ],
+      "past_queries": [
+        {
+          "question": "Show me revenue by city",
+          "sql": "WITH pay AS (SELECT c.city AS city, SUM(p.amount_paise) AS total FROM payments p JOIN invoices i ON p.invoice_id = i.id JOIN customers c ON i.customer_id = c.id GROUP BY c.city), ref AS (SELECT c.city AS city, SUM(r.amount_paise) AS total FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id GROUP BY c.city), cities AS (SELECT DISTINCT city FROM customers) SELECT cities.city AS city, COALESCE(pay.total, 0) - COALESCE(ref.total, 0) AS revenue FROM cities LEFT JOIN pay ON pay.city = cities.city LEFT JOIN ref ON ref.city = cities.city ORDER BY revenue DESC",
+          "score": 0.55
+        },
+        {
+          "question": "What were total refunds in Mumbai last month?",
+          "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= date('now', 'start of month', '-1 month') AND r.refunded_on < date('now', 'start of month')",
+          "score": 0.064
+        }
+      ]
+    },
+    "confidence": 0.99,
+    "band": "high",
+    "metric": "revenue",
+    "validation": {
+      "empty_result": false,
+      "outliers": [],
+      "schema_conformant": true
+    },
+    "rows": [
+      {
+        "city": "Mumbai",
+        "revenue": 9030776
+      },
+      {
+        "city": "Pune",
+        "revenue": 6378301
+      },
+      {
+        "city": "Hyderabad",
+        "revenue": 6281888
+      },
+      {
+        "city": "Bengaluru",
+        "revenue": 5303199
+      },
+      {
+        "city": "Chennai",
+        "revenue": 2073435
+      },
+      {
+        "city": "Kolkata",
+        "revenue": 1777573
+      },
+      {
+        "city": "Delhi",
+        "revenue": 1512294
+      },
+      {
+        "city": "Ahmedabad",
+        "revenue": 1097952
+      }
+    ]
+  },
+  "ask_vague": {
+    "request_id": "req_ecd063926646",
+    "route": "clarified",
+    "answer": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+    "message": "I can help with billing analytics, dev tickets, or charge disputes. Could you say which one this is about \u2014 for example, 'total refunds in Mumbai last month'?",
+    "sql": null,
+    "sources": {
+      "schema": [],
+      "past_queries": []
+    },
+    "confidence": 0.0,
+    "band": "low",
+    "metric": null,
+    "validation": null,
+    "rows": []
+  },
+  "ask_dev_phase2": {
+    "request_id": "req_8d61c2601da6",
+    "route": "phase2",
+    "answer": "The dev slice lands in Phase 2 \u2014 this build ships the shared core and the analytics slice only. Try a billing question, e.g. 'total refunds in Mumbai last month'.",
+    "message": "The dev slice lands in Phase 2 \u2014 this build ships the shared core and the analytics slice only. Try a billing question, e.g. 'total refunds in Mumbai last month'.",
+    "sql": null,
+    "sources": {
+      "schema": [],
+      "past_queries": []
+    },
+    "confidence": 0.99,
+    "band": "high",
+    "metric": null,
+    "validation": null,
+    "rows": []
+  },
+  "schema": {
+    "metrics": {
+      "avg_invoice_value": {
+        "definition": "Average invoice amount in the given period.",
+        "formula": "AVG(invoices.amount_paise)",
+        "synonyms": [
+          "average invoice value",
+          "avg invoice",
+          "mean invoice value",
+          "average invoice amount"
+        ],
+        "unit": "INR"
+      },
+      "dispute_rate": {
+        "definition": "Disputes opened as a share of invoices issued: COUNT(disputes) / COUNT(invoices).",
+        "formula": "COUNT(disputes) / COUNT(invoices)",
+        "synonyms": [
+          "dispute rate",
+          "dispute ratio"
+        ],
+        "unit": "ratio"
+      },
+      "gross_revenue": {
+        "definition": "Gross revenue before refunds: total payments received, ignoring refunds.",
+        "formula": "SUM(payments.amount_paise)",
+        "synonyms": [
+          "gross revenue",
+          "gross sales",
+          "gross turnover"
+        ],
+        "unit": "INR"
+      },
+      "refund_rate": {
+        "definition": "Refunds as a share of payments received: SUM(refunds) / SUM(payments).",
+        "formula": "SUM(refunds.amount_paise) / SUM(payments.amount_paise)",
+        "synonyms": [
+          "refund rate",
+          "refund ratio",
+          "refund percentage"
+        ],
+        "unit": "ratio"
+      },
+      "refunds": {
+        "definition": "Total amount refunded to customers in the given period.",
+        "formula": "SUM(refunds.amount_paise)",
+        "synonyms": [
+          "refund",
+          "refunded amount",
+          "total refunds",
+          "money refunded"
+        ],
+        "unit": "INR"
+      },
+      "revenue": {
+        "definition": "Net revenue after refunds: total payments received minus total refunds, in the given period. Amounts in paise; divide by 100 for rupees.",
+        "formula": "SUM(payments.amount_paise) - SUM(refunds.amount_paise)",
+        "synonyms": [
+          "net revenue",
+          "sales",
+          "turnover",
+          "income"
+        ],
+        "unit": "INR"
+      }
+    },
+    "tables": {
+      "customers": {
+        "columns": [
+          {
+            "description": "Customer id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer name",
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "description": "Customer city",
+            "name": "city",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: email address",
+            "name": "email",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: phone number",
+            "name": "phone",
+            "type": "TEXT"
+          },
+          {
+            "description": "PII: account number",
+            "name": "account_number",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Customers, one row per customer."
+      },
+      "disputes": {
+        "columns": [
+          {
+            "description": "Dispute id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer id",
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Dispute reason",
+            "name": "reason",
+            "type": "TEXT"
+          },
+          {
+            "description": "open, resolved, or escalated",
+            "name": "status",
+            "type": "TEXT"
+          },
+          {
+            "description": "Opened date, YYYY-MM-DD",
+            "name": "opened_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "Resolved date, YYYY-MM-DD or null",
+            "name": "resolved_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "How it was resolved, or null",
+            "name": "resolution",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Charge disputes opened by customers."
+      },
+      "invoices": {
+        "columns": [
+          {
+            "description": "Invoice id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Customer id",
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Issue date, YYYY-MM-DD",
+            "name": "issued_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "paid, pending, or overdue",
+            "name": "status",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Invoices issued to customers. Amounts in paise."
+      },
+      "payments": {
+        "columns": [
+          {
+            "description": "Payment id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Payment amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Payment date, YYYY-MM-DD",
+            "name": "paid_on",
+            "type": "TEXT"
+          },
+          {
+            "description": "upi, card, or netbanking",
+            "name": "method",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Payments received against invoices. Amounts in paise."
+      },
+      "refunds": {
+        "columns": [
+          {
+            "description": "Refund id",
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Invoice id",
+            "name": "invoice_id",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Refund amount in paise",
+            "name": "amount_paise",
+            "type": "INTEGER"
+          },
+          {
+            "description": "Refund reason",
+            "name": "reason",
+            "type": "TEXT"
+          },
+          {
+            "description": "Refund date, YYYY-MM-DD",
+            "name": "refunded_on",
+            "type": "TEXT"
+          }
+        ],
+        "description": "Refunds issued against invoices. Amounts in paise."
+      }
+    }
+  },
+  "router": {
+    "confidence_distribution": {
+      "high": 5,
+      "low": 1
+    },
+    "domains": {
+      "analytics": 4,
+      "unknown": 1,
+      "dev": 1
+    },
+    "golden_router_accuracy": 1.0,
+    "golden_false_positive_rate": 0.0,
+    "golden_runs": 22
+  },
+  "metrics": {
+    "total_questions": 6,
+    "answered": 4,
+    "routed_elsewhere": 2,
+    "autonomy_rate": 0.6666666666666666,
+    "routing_accuracy_golden": 1.0,
+    "analytics_correct_golden": 6,
+    "sql_validation_correct_golden": 4
+  }
+}
