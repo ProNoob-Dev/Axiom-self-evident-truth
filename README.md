@@ -372,10 +372,9 @@ implemented vs what is known conceptually:
 **Hands-on in this build:** §1 Python Core (Pydantic, dataclasses,
 exception handling, type hints; money math in integer paise, formatted by
 `format_inr`) · §2 Backend / FastAPI / APIs (routers, OpenAPI, health
-checks) · §3 SQL / Databases (Postgres, pgvector, joins / CTEs, indexes) ·
+checks) · §3 SQL / Databases (SQLite, + pgvector when DATABASE_URL is set; SQL generation + validation via sqlglot) ·
 §5 GenAI / LLM Fundamentals (prompting, tokens, hallucination, guardrails) ·
-§6 RAG (chunking, embeddings, hybrid search, re-ranking) · §7 RAGAS /
-DeepEval (the eval harness: groundedness, relevance, faithfulness) · §8
+§6 RAG (TF-IDF retrieval over the semantic layer and past queries; no embeddings in local mode) · §7 LLM evaluation (deterministic eval scorer — groundedness, relevance, faithfulness-style checks, not RAGAS/DeepEval as a library) · §8
 LangGraph / Agents / MCP (orchestrator, supervisor + specialist agents, MCP
 tool servers — LangGraph only, no LangChain) · §11 System Design (the
 architecture itself, plus production incident scenarios as eval cases) ·
