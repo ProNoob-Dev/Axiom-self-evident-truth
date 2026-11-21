@@ -1,6 +1,6 @@
 # Axiom
 
-[![CI](https://github.com/ProNoob-Dev/Axiom/actions/workflows/ci.yml/badge.svg)](https://github.com/ProNoob-Dev/Axiom/actions/workflows/ci.yml)
+[![CI](https://github.com/ProNoob-Dev/Axiom-self-evident-truth/actions/workflows/ci.yml/badge.svg)](https://github.com/ProNoob-Dev/Axiom-self-evident-truth/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
 
@@ -43,8 +43,8 @@ routing, guardrails, evals, and a human in the loop.
 ## Quickstart
 
 ```bash
-git clone https://github.com/ProNoob-Dev/Axiom.git
-cd Axiom
+git clone https://github.com/ProNoob-Dev/Axiom-self-evident-truth.git
+cd Axiom-self-evident-truth
 python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python scripts/seed.py   # builds data/billing.sqlite (idempotent)
 .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8125
@@ -405,11 +405,42 @@ The `site/` front-end is restyled to the TOPHTMLCSS streaming-analytics
 dashboard language: obsidian nebula ground, cyan + gold accents, glossy
 KPI cards, a 4-chart router grid, leaderboard-style tables, self-hosted
 Outfit + JetBrains Mono. All numbers come from the live API or the seeded
-data; no decorative data. Screenshots live in `site/shots/` and will be
-embedded here once reviewed. Taste gate on the restyled UI: FAIL 17
+data; no decorative data. Taste gate on the restyled UI: FAIL 17
 (round 1) — all landing-page checks that do not fit a working app
 console; one genuine fix landed after (h2 text aligned to the page
-margin, verified at 296px). No screenshots are embedded until then.
+margin, verified at 296px).
+
+## Screenshots
+
+All screenshots are of the running console (backend on port 8125, console
+on port 8130), real data throughout — every view, including disputes.
+
+### Ask — question, answer with SQL, clarification
+
+![Ask](site/shots/ask-1440.png)
+![Ask answered](site/shots/ask-answered.png)
+![Ask clarified](site/shots/ask-clarified.png)
+
+### Tickets — list, work, approve
+
+![Tickets list](site/shots/tickets-list.png)
+![Ticket detail, open](site/shots/ticket-detail-open.png)
+![Ticket detail, worked](site/shots/ticket-detail-worked.png)
+![Ticket detail, approved](site/shots/ticket-detail-approved.png)
+
+### Disputes — list, resolved from precedent, no precedent
+
+![Disputes list](site/shots/disputes-list.png)
+![Dispute detail, resolved](site/shots/dispute-detail-resolved.png)
+![Dispute detail, no precedent](site/shots/dispute-detail-noprecedent.png)
+
+### Router, schema, metrics, traces, palette
+
+![Router](site/shots/router.png)
+![Schema](site/shots/schema.png)
+![Metrics](site/shots/metrics.png)
+![Traces](site/shots/traces.png)
+![Command palette](site/shots/palette.png)
 
 ## What is deliberately not built
 
