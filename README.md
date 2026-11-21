@@ -1,6 +1,7 @@
 # Axiom
 
 [![CI](https://github.com/ProNoob-Dev/Axiom-self-evident-truth/actions/workflows/ci.yml/badge.svg)](https://github.com/ProNoob-Dev/Axiom-self-evident-truth/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://pronoob-dev.github.io/Axiom-self-evident-truth/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
 
@@ -24,6 +25,20 @@ routing, guardrails, evals, and a human in the loop.
 
 > Every answer ships with its proof: the SQL that ran, the sources it came
 > from, the precedents it cites, and the audit trail behind it.
+
+## Demo
+
+**[Try the live console →](https://pronoob-dev.github.io/Axiom-self-evident-truth/)** — the whole console in your browser, no install. Ask a question, work a ticket, resolve a dispute.
+
+![Axiom console demo](docs/demo.gif)
+
+*20-second tour of the real console: an answered question with its SQL, a clarification, ticket TKT-101 worked and approved, dispute DSP-1 resolved from precedent, then the Router and Metrics views. [Full video (MP4, 20s)](docs/demo.mp4).*
+
+![LangGraph pipeline](docs/pipeline.gif)
+
+*How a question becomes a proven answer — the 10 real stages from `app/graph.py`: intake → classify → verify → retrieve schema → generate SQL → validate SQL → execute → validate result → respond → audit.*
+
+> **Scope note:** the live site is the console in **demo mode with seeded data** — the same answers the real API gives for the golden questions, served from `site/assets/demo-data.json`. The Python API (FastAPI / LangGraph / SQLite) runs locally via the [Quickstart](#quickstart), not on GitHub Pages. Nothing on the live page is sent anywhere; ticket work and dispute resolution update only the in-browser demo copy.
 
 ## What it does
 

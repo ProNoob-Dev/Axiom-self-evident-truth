@@ -18,6 +18,7 @@
   function fmtMoneyPaise(p) { return "₹" + (Number(p) / 100).toLocaleString("en-IN", { maximumFractionDigits: 2 }); }
 
   function api(path, opts) {
+    if (demoMode) { if (!demoActive) setDemoPill(); return demoApi(path, opts); }
     opts = opts || {};
     opts.headers = { "Content-Type": "application/json" };
     return fetch("/api" + path, opts).then(function (res) {
@@ -25,6 +26,93 @@
         if (!res.ok) throw new Error((data && data.detail) || ("Request failed: " + res.status));
         return data;
       });
+    }).catch(function () {
+      // No live API (static host, backend down): serve the seeded demo data.
+      // shortcut: a real API error is also served from demo data — the pill
+      // says DEMO MODE so it is never mistaken for live.
+      if (!demoActive) setDemoPill();
+      return demoApi(path, opts);
+    });
+  }
+
+  /* ---- demo mode: GitHub Pages is static, so when the API is unreachable
+     (or ?demo=1 is set) the console serves seeded demo data captured from
+     the real API (assets/demo-data.json). Ask answers the seeded questions
+     and clarifies anything else; ticket work/review and dispute resolve
+     update the in-memory demo copy only — nothing is sent anywhere. */
+  var demoMode = /[?&]demo=1/.test(location.search);
+  var demoActive = false;
+  var demoStore = null;
+  function demoLoad() {
+    if (demoStore) return Promise.resolve(demoStore);
+    return fetch("assets/demo-data.json").then(function (r) {
+      if (!r.ok) throw new Error("demo data missing");
+      return r.json();
+    }).then(function (d) { demoStore = d; return d; });
+  }
+  function setDemoPill() {
+    demoActive = true;
+    $("#health-line").textContent = "Demo mode — seeded data, no live API (run the Quickstart for the real API)";
+    var sp = $("#sync-pill");
+    if (sp) { sp.textContent = "DEMO MODE · SEEDED DATA"; sp.classList.add("down"); }
+  }
+  function demoNorm(q) {
+    return String(q || "").trim().toLowerCase().replace(/\s+/g, " ").replace(/\?$/, "");
+  }
+  function demoFind(list, id) {
+    var found = null;
+    list.forEach(function (x) { if (String(x.id) === String(id)) found = x; });
+    return found;
+  }
+  function demoApi(path, opts) {
+    opts = opts || {};
+    var method = opts.method || "GET";
+    return demoLoad().then(function (d) {
+      var m;
+      if (method === "POST" && path === "/ask") {
+        var q = "";
+        try { q = JSON.parse(opts.body).question || ""; } catch (e) {}
+        return d.ask[demoNorm(q)] || d.ask.fallback;
+      }
+      if (method === "POST" && (m = path.match(/^\/tickets\/([^/]+)\/work$/))) {
+        var worked = (d.ticketWorked || {})[m[1]];
+        if (!worked) throw new Error("No demo data for " + path);
+        d.ticketsList.tickets = d.ticketsList.tickets.map(function (t) { return t.id === m[1] ? worked : t; });
+        return worked;
+      }
+      if (method === "POST" && (m = path.match(/^\/tickets\/([^/]+)\/review$/))) {
+        var cur = demoFind(d.ticketsList.tickets, m[1]);
+        if (!cur || cur.status !== "awaiting_review") throw new Error("Ticket is not awaiting review in demo mode");
+        var dec = "approve";
+        try { dec = JSON.parse(opts.body).decision || "approve"; } catch (e) {}
+        var done = JSON.parse(JSON.stringify(cur));
+        done.status = dec === "approve" ? "approved" : "rejected";
+        try { var note = JSON.parse(opts.body).note; if (note) done.review_note = note; } catch (e) {}
+        d.ticketsList.tickets = d.ticketsList.tickets.map(function (t) { return t.id === m[1] ? done : t; });
+        return done;
+      }
+      if (method === "POST" && (m = path.match(/^\/disputes\/(\d+)\/resolve$/))) {
+        var res = (d.disputeResolve || {})[m[1]];
+        if (!res) throw new Error("No demo data for " + path);
+        return res;
+      }
+      if (method === "GET" && (m = path.match(/^\/tickets\/([^/]+)$/))) {
+        var t = demoFind(d.ticketsList.tickets, m[1]);
+        if (!t) throw new Error("Unknown ticket in demo mode");
+        return t;
+      }
+      if (method === "GET" && (m = path.match(/^\/disputes\/(\d+)$/))) {
+        var x = demoFind(d.disputesList.disputes, Number(m[1]));
+        if (!x) throw new Error("Unknown dispute in demo mode");
+        return x;
+      }
+      var map = {
+        "GET /health": d.health, "GET /tickets": d.ticketsList,
+        "GET /disputes": d.disputesList, "GET /router": d.router,
+        "GET /schema": d.schema, "GET /metrics": d.metrics
+      };
+      if (map[method + " " + path] !== undefined) return map[method + " " + path];
+      throw new Error("No demo data for " + method + " " + path);
     });
   }
 
@@ -61,6 +149,7 @@
 
   /* ---- health ---- */
   api("/health").then(function (h) {
+    if (demoActive) return; // setDemoPill already ran
     $("#health-line").textContent = "API live · " + h.llm_provider + " · " + h.retrieval;
     var sp = $("#sync-pill");
     if (sp) { sp.textContent = "API LIVE · LLM " + String(h.llm_provider).toUpperCase(); sp.classList.remove("down"); }
