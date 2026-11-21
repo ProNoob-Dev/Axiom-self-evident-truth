@@ -1,0 +1,874 @@
+{
+ "start": "2026-11-21T14:16:38.064Z",
+ "round": 3,
+ "idle": 0,
+ "errors": 0,
+ "status": "open",
+ "history": [
+  {
+   "at": "2026-11-21T14:17:47.727Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 37,
+   "round": 1,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-21T14:17:59.268Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 37,
+   "round": 1,
+   "reused": true,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-21T14:20:00.187Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 20,
+   "round": 2,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-21T14:20:12.445Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 20,
+   "round": 2,
+   "reused": true,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-21T14:22:00.818Z",
+   "mode": "manual",
+   "status": "open",
+   "fails": 16,
+   "round": 3,
+   "reused": false,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": "site/index.html",
+  "url": null,
+  "root": null,
+  "kind": "software",
+  "category": "enterprise agentic copilot console",
+  "primary": "Ask Axiom",
+  "rounds": 3,
+  "start": "2026-11-21T14:16:38.064Z",
+  "by": "gate.mjs --start"
+ },
+ "manual": true,
+ "roundKey": "93f5d22acdf6e05f:0f7bcd91",
+ "roundFree": false,
+ "idleFree": false,
+ "blockKey": null,
+ "fp": "93f5d22acdf6e05f",
+ "page": "site/index.html",
+ "found": {
+  "fails": [
+   {
+    "check": "hero-fill",
+    "where": "section#view-ask \"Ask a billing question\"",
+    "msg": "the next section shows on the first screen: it starts at 128px on a 900px screen (the hero ends at 104px)",
+    "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "hero-fill"
+    ],
+    "wheres": [
+     "section#view-ask \"Ask a billing question\""
+    ]
+   },
+   {
+    "check": "flush",
+    "where": "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\"",
+    "msg": "its button sits 0px above the rule on top of the footer",
+    "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "flush"
+    ],
+    "wheres": [
+     "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\""
+    ]
+   },
+   {
+    "check": "nav",
+    "where": "main#main > div.topbar",
+    "msg": "the nav has no bar, and its pieces sit past the content's edges (665-1312px against 296-1144px)",
+    "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "nav"
+    ],
+    "wheres": [
+     "main#main > div.topbar"
+    ]
+   },
+   {
+    "check": "button-styles",
+    "where": "form#ask-form > div.ask-box > button.btn.btn--primary \"Ask Axiom\"",
+    "msg": "one button style (soft, fill #2dd4bf, outline #2dd4bf) in 2 heights: 36, 49px (\"Ask Axiom\" 49px, \"Ask Axiom\" 36px)",
+    "fix": "one primary and one secondary button: one shape, one height per size, one label size",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "button-styles"
+    ],
+    "wheres": [
+     "form#ask-form > div.ask-box > button.btn.btn--primary \"Ask Axiom\""
+    ]
+   },
+   {
+    "check": "same-action",
+    "where": "button#topbar-ask \"Ask Axiom\"",
+    "msg": "\"Ask Axiom\" appears 2 times in different looks: 36px and 49px tall, labels at 13px and 14px",
+    "fix": "draw one action the same way everywhere (only the nav copy may be one size smaller)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "same-action"
+    ],
+    "wheres": [
+     "button#topbar-ask \"Ask Axiom\""
+    ]
+   },
+   {
+    "check": "moment-none",
+    "where": "(the page)",
+    "msg": "a software page (--type) deals no moment: every kind carries one, two on a long page (moments.md)",
+    "fix": "deal one (moments.mjs pick --page software) and mount it in its own section",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "moment-none"
+    ],
+    "wheres": [
+     "(the page)"
+    ]
+   },
+   {
+    "check": "hero-screen",
+    "where": "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+    "msg": "the hero ends at 104px on a 900px screen, 796px above the fold: it ends at the fold, 1px either way (SR-1)",
+    "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "hero-screen"
+    ],
+    "wheres": [
+     "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+    ]
+   },
+   {
+    "check": "hero-screen",
+    "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+    "msg": "772px of the next section shows on the first screen (from 128px on a 900px screen): nothing below the hero shows at load (SR-1)",
+    "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "hero-screen"
+    ],
+    "wheres": [
+     "section#view-ask \"Ask a billing question Plain English in,\""
+    ]
+   },
+   {
+    "check": "section-height",
+    "where": "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+    "msg": "the section is 136px tall (0.2 screens), 764px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+    "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "section-height"
+    ],
+    "wheres": [
+     "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+     "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+    ]
+   },
+   {
+    "check": "section-height",
+    "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+    "msg": "the section is 214px tall (0.2 screens), 686px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+    "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "section-height"
+    ],
+    "wheres": [
+     "section#view-ask \"Ask a billing question Plain English in,\""
+    ]
+   },
+   {
+    "check": "one-section",
+    "where": "main#main > div.topbar > h1 \"Axiom copilot console\"",
+    "msg": "the screen at scroll 0px (stride 0) shows 136px of section 3 and the heading of section 1 whole and the content of 3 sections, over 24px each beside section 2: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+    "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "one-section"
+    ],
+    "wheres": [
+     "main#main > div.topbar > h1 \"Axiom copilot console\"",
+     "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+     "main#main > footer \"Axiom — one shared LangGraph core, three\""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+    "msg": "the content of section 1 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+    "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+    "msg": "the content of section 2 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+    "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "section#view-ask \"Ask a billing question Plain English in,\""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+    "msg": "the content of section 3 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+    "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "main#main > footer \"Axiom — one shared LangGraph core, three\""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "a.skip-link \"Skip to content\"",
+    "msg": "a <a> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+    "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "a.skip-link \"Skip to content\""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "div.shell \"AxiomEnterprise agentic copilot Workspac\"",
+    "msg": "a <div> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+    "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "div.shell \"AxiomEnterprise agentic copilot Workspac\""
+    ]
+   },
+   {
+    "check": "container-edges",
+    "where": "input#ask-q",
+    "msg": "a box over half the container wide runs 296-1194px, not on the container's lines at 296-1312px (SR-6)",
+    "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "container-edges"
+    ],
+    "wheres": [
+     "input#ask-q"
+    ]
+   },
+   {
+    "check": "flush",
+    "where": "form#ask-form > div.chips > button.chip:nth-of-type(3) \"Show average invoice value\"",
+    "msg": "its button sits 0px above the rule on top of the footer",
+    "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)",
+    "widths": [
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "flush"
+    ],
+    "wheres": [
+     "form#ask-form > div.chips > button.chip:nth-of-type(3) \"Show average invoice value\""
+    ]
+   },
+   {
+    "check": "nav",
+    "where": "div.shell > aside.sidebar > nav:nth-of-type(1)",
+    "msg": "nav links wrap onto 3 rows",
+    "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it",
+    "widths": [
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "nav"
+    ],
+    "wheres": [
+     "div.shell > aside.sidebar > nav:nth-of-type(1)"
+    ]
+   },
+   {
+    "check": "text-only",
+    "where": "section#view-ask \"Ask a billing question\"",
+    "msg": "the closing section is only text: no picture, icon, mock or effect in it",
+    "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground",
+    "widths": [
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "text-only"
+    ],
+    "wheres": [
+     "section#view-ask \"Ask a billing question\""
+    ]
+   },
+   {
+    "check": "container",
+    "where": "page",
+    "msg": "no .wrap",
+    "fix": "put the content in one .wrap",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "container"
+    ],
+    "wheres": [
+     "page"
+    ]
+   }
+  ],
+  "warns": [
+   {
+    "check": "assets",
+    "where": "(the page)",
+    "msg": "the data file api/health did not load (404)",
+    "fix": "fix the path, or remove the reference",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "copy-buttons",
+    "where": "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\"",
+    "msg": "\"Show refunds in Mumbai last month\" does not start with a verb (book, buy, try, start, get, see...) (and 3 more like it: \"Show revenue by city\", \"Show average invoice val\", \"Show refund rate\")",
+    "fix": "label buttons with a verb and what the visitor gets (\"Book a room\", \"Start free trial\")",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "main#main > div.topbar / section#view-ask",
+    "msg": "25px between these sections, -54% against the median 55px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#view-ask / main#main > footer",
+    "msg": "84px between these sections, +54% against the median 55px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "form-fields",
+    "where": "form#ask-form",
+    "msg": "the form has no status line (role=\"status\"): sending, sent and errors are never read out",
+    "fix": "give each field its type, autocomplete and inputmode, never block paste or disable the button before a submit, and add the status line (references/system.md, Forms)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "tap-size",
+    "where": "button#topbar-ask \"Ask Axiom\"",
+    "msg": "a 91x36px tap target: under the 44px a phone needs",
+    "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "tap-size",
+    "where": "button#palette-open \"Cmd+K\"",
+    "msg": "a 54x24px tap target: under the 44px a phone needs",
+    "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box",
+    "widths": [
+     390,
+     320
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "tap-size",
+    "where": "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\"",
+    "msg": "a 251x36px tap target (and 3 more like it on this screen): under the 44px a phone needs",
+    "fix": "make every link and control outside running text 44px tall on a phone: display: inline-flex; align-items: center; min-height: 44px (a footer list then needs no gap), a 44px small button, or a transparent ::before laid past the box",
+    "widths": [
+     390,
+     320
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "fold-cut",
+    "where": "button#topbar-ask \"Ask Axiom\"",
+    "msg": "the hero's button \"Ask Axiom\" is cut by the bottom of the first screen (30px of its 36px below the fold)",
+    "fix": "size the hero so the heading ends above the fold, or starts below it",
+    "widths": [
+     320
+    ],
+    "from": "consistency"
+   }
+  ],
+  "crashed": [],
+  "seconds": {
+   "consistency": 56,
+   "layout": 13
+  }
+ },
+ "open": [
+  {
+   "check": "flush",
+   "where": "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\"",
+   "msg": "its button sits 0px above the rule on top of the footer",
+   "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "flush"
+   ],
+   "wheres": [
+    "form#ask-form > div.chips > button.chip:nth-of-type(1) \"Show refunds in Mumbai last month\""
+   ]
+  },
+  {
+   "check": "nav",
+   "where": "main#main > div.topbar",
+   "msg": "the nav has no bar, and its pieces sit past the content's edges (665-1312px against 296-1144px)",
+   "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "nav"
+   ],
+   "wheres": [
+    "main#main > div.topbar"
+   ]
+  },
+  {
+   "check": "button-styles",
+   "where": "form#ask-form > div.ask-box > button.btn.btn--primary \"Ask Axiom\"",
+   "msg": "one button style (soft, fill #2dd4bf, outline #2dd4bf) in 2 heights: 36, 49px (\"Ask Axiom\" 49px, \"Ask Axiom\" 36px)",
+   "fix": "one primary and one secondary button: one shape, one height per size, one label size",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "button-styles"
+   ],
+   "wheres": [
+    "form#ask-form > div.ask-box > button.btn.btn--primary \"Ask Axiom\""
+   ]
+  },
+  {
+   "check": "same-action",
+   "where": "button#topbar-ask \"Ask Axiom\"",
+   "msg": "\"Ask Axiom\" appears 2 times in different looks: 36px and 49px tall, labels at 13px and 14px",
+   "fix": "draw one action the same way everywhere (only the nav copy may be one size smaller)",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "same-action"
+   ],
+   "wheres": [
+    "button#topbar-ask \"Ask Axiom\""
+   ]
+  },
+  {
+   "check": "hero-screen",
+   "where": "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+   "msg": "the hero ends at 104px on a 900px screen, 796px above the fold: it ends at the fold, 1px either way (SR-1)",
+   "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "hero-screen"
+   ],
+   "wheres": [
+    "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+   ]
+  },
+  {
+   "check": "hero-screen",
+   "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+   "msg": "772px of the next section shows on the first screen (from 128px on a 900px screen): nothing below the hero shows at load (SR-1)",
+   "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "hero-screen"
+   ],
+   "wheres": [
+    "section#view-ask \"Ask a billing question Plain English in,\""
+   ]
+  },
+  {
+   "check": "section-height",
+   "where": "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+   "msg": "the section is 136px tall (0.2 screens), 764px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+   "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "section-height"
+   ],
+   "wheres": [
+    "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+    "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+   ]
+  },
+  {
+   "check": "one-section",
+   "where": "main#main > div.topbar > h1 \"Axiom copilot console\"",
+   "msg": "the screen at scroll 0px (stride 0) shows 136px of section 3 and the heading of section 1 whole and the content of 3 sections, over 24px each beside section 2: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+   "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "one-section"
+   ],
+   "wheres": [
+    "main#main > div.topbar > h1 \"Axiom copilot console\"",
+    "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+    "main#main > footer \"Axiom — one shared LangGraph core, three\""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "main#main > div.topbar \"Axiom copilot console Ask workspace One \"",
+   "msg": "the content of section 1 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+   "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "main#main > div.topbar \"Axiom copilot console Ask workspace One \""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+   "msg": "the content of section 2 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+   "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "section#view-ask \"Ask a billing question Plain English in,\""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "main#main > footer \"Axiom — one shared LangGraph core, three\"",
+   "msg": "the content of section 3 runs 296px from the left and 128px from the right (read from its outermost blocks: no .wrap): 296 and 128px are not one margin; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+   "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "main#main > footer \"Axiom — one shared LangGraph core, three\""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "a.skip-link \"Skip to content\"",
+   "msg": "a <a> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+   "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "a.skip-link \"Skip to content\""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "div.shell \"AxiomEnterprise agentic copilot Workspac\"",
+   "msg": "a <div> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+   "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "div.shell \"AxiomEnterprise agentic copilot Workspac\""
+   ]
+  },
+  {
+   "check": "container-edges",
+   "where": "input#ask-q",
+   "msg": "a box over half the container wide runs 296-1194px, not on the container's lines at 296-1312px (SR-6)",
+   "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "container-edges"
+   ],
+   "wheres": [
+    "input#ask-q"
+   ]
+  },
+  {
+   "check": "flush",
+   "where": "form#ask-form > div.chips > button.chip:nth-of-type(3) \"Show average invoice value\"",
+   "msg": "its button sits 0px above the rule on top of the footer",
+   "fix": "give the section its padding at the edge where the ground changes (the closing call keeps a clear gap above the footer)",
+   "widths": [
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "flush"
+   ],
+   "wheres": [
+    "form#ask-form > div.chips > button.chip:nth-of-type(3) \"Show average invoice value\""
+   ]
+  },
+  {
+   "check": "text-only",
+   "where": "section#view-ask \"Ask a billing question\"",
+   "msg": "the closing section is only text: no picture, icon, mock or effect in it",
+   "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground",
+   "widths": [
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "text-only"
+   ],
+   "wheres": [
+    "section#view-ask \"Ask a billing question\""
+   ]
+  }
+ ],
+ "waived": [
+  {
+   "check": "hero-fill",
+   "where": "section#view-ask \"Ask a billing question\"",
+   "msg": "the next section shows on the first screen: it starts at 128px on a 900px screen (the hero ends at 104px)",
+   "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "hero-fill"
+   ],
+   "wheres": [
+    "section#view-ask \"Ask a billing question\""
+   ],
+   "reason": "App console: views are working panels sized by their content, not full-screen hero sections; the ask workspace is the app itself."
+  },
+  {
+   "check": "moment-none",
+   "where": "(the page)",
+   "msg": "a software page (--type) deals no moment: every kind carries one, two on a long page (moments.md)",
+   "fix": "deal one (moments.mjs pick --page software) and mount it in its own section",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "moment-none"
+   ],
+   "wheres": [
+    "(the page)"
+   ],
+   "reason": "App console: there is no dealt marketing moment; the live pipeline graph and trace view are the page's visual."
+  },
+  {
+   "check": "section-height",
+   "where": "section#view-ask \"Ask a billing question Plain English in,\"",
+   "msg": "the section is 214px tall (0.2 screens), 686px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+   "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "section-height"
+   ],
+   "wheres": [
+    "section#view-ask \"Ask a billing question Plain English in,\""
+   ],
+   "reason": "App console: the ask view holds a question box and live answers; forcing it to one screen would pad a working tool with empty space."
+  },
+  {
+   "check": "nav",
+   "where": "div.shell > aside.sidebar > nav:nth-of-type(1)",
+   "msg": "nav links wrap onto 3 rows",
+   "fix": "make the nav one bar from the content's left edge to its right edge, with every link and action inside it",
+   "widths": [
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "nav"
+   ],
+   "wheres": [
+    "div.shell > aside.sidebar > nav:nth-of-type(1)"
+   ],
+   "reason": "App console: the sidebar nav stacks vertically at phone width by design (Linear-style app shell), it is not a top nav bar."
+  },
+  {
+   "check": "container",
+   "where": "page",
+   "msg": "no .wrap",
+   "fix": "put the content in one .wrap",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "container"
+   ],
+   "wheres": [
+    "page"
+   ],
+   "reason": "Axiom is a working app console with a sidebar shell, not a marketing landing page; it has no kit .wrap landing layout by design."
+  }
+ ],
+ "warnCount": 9,
+ "at": "2026-11-21T14:22:00.818Z",
+ "openTold": true
+}

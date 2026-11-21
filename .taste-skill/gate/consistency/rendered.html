@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en" data-type="software" data-radius="sharp" data-buttons="solid"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Axiom: one copilot for dev tickets, billing questions and disputes</title>
+<meta name="description" content="Axiom is an enterprise agentic copilot: a developer assistant that works tickets end to end, a text-to-SQL copilot that only runs validated queries, and a disputes agent that resolves from precedent — every answer with its proof attached.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Axiom: one copilot for dev tickets, billing questions and disputes">
+<meta property="og:description" content="Ask a billing question, work a ticket, or resolve a dispute from precedent. Every answer shows its SQL, sources, confidence and trace.">
+<meta property="og:image" content="share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0a0c0e">
+<meta name="site-kind" content="software">
+<meta name="page-type" content="software">
+<style>
+:root{
+  --bg:#0a0c0e; --surface:#111417; --surface2:#161a1f; --border:#23282e; --border2:#2e343b;
+  --ink:#e6e9ec; --muted:#9aa3ab; --faint:#98a1a9;
+  --accent:#2dd4bf; --accent-ink:#06231f;
+  --green:#4ade80; --amber:#fbbf24; --red:#f87171;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.skip-link{position:absolute;left:8px;top:-100px;background:var(--accent);color:var(--accent-ink);padding:10px 16px;z-index:50;font-weight:600}
+.skip-link:focus{top:8px}
+.mono{font-family:var(--mono);font-size:13px}
+.muted{color:var(--muted)}
+/* ---- shell: sidebar + main ---- */
+.shell{display:flex;min-height:100vh}
+.sidebar{width:264px;flex:none;border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.brand{font-size:17px;font-weight:650;letter-spacing:-.01em;padding:4px 10px 16px}
+.brand small{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:2px}
+.nav-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:14px 10px 6px}
+.nav-btn{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:8px;color:var(--ink);padding:10px 12px;font-size:14px;min-height:44px}
+.nav-btn:hover{background:var(--surface2)}
+.nav-btn[aria-selected="true"]{background:var(--surface2);border-color:var(--border2)}
+.nav-btn .kbd{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.side-foot{margin-top:auto;padding:12px 10px 0;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6}
+.side-foot .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px}
+.main{flex:1;min-width:0;padding:28px 32px 64px;max-width:1080px}
+.topbar{display:block;margin-bottom:24px}
+.topbar h1{font-size:22px;font-weight:650;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px}
+.topbar-row{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.view-name{font-size:15px;font-weight:500;color:var(--muted);margin:0}
+.topbar p{margin:0;color:var(--muted);font-size:14px}
+.palette-hint{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--faint);border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:none}
+.palette-hint:hover{color:var(--ink);border-color:var(--border2)}
+.view[hidden]{display:none}
+.view{margin-bottom:32px}
+.view h2{font-size:17px;font-weight:650;margin:0 0 4px;letter-spacing:-.01em}
+.view .lede{color:var(--muted);font-size:14px;margin:0 0 20px;max-width:62ch}
+/* ---- panels, tables, buttons ---- */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:16px}
+.panel h3{font-size:14px;font-weight:650;margin:0 0 4px}
+.panel .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--ink);font-size:14px;font-weight:550}
+.btn:hover{border-color:var(--muted)}
+.btn--primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn--primary:hover{filter:brightness(1.08)}
+.btn--danger{color:var(--red);border-color:#4a2626}
+.btn--sm{min-height:36px;padding:0 12px;font-size:13px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--surface2)}
+tbody tr[aria-selected="true"]{background:var(--surface2)}
+td .mono{font-size:13px}
+.badge{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted);white-space:nowrap}
+.badge--green{color:var(--green);border-color:#1d4a2e;background:#0f1f14}
+.badge--amber{color:var(--amber);border-color:#4d3d12;background:#221b08}
+.badge--red{color:var(--red);border-color:#4a2626;background:#221010}
+.badge--accent{color:var(--accent);border-color:#134e46;background:#08201c}
+/* ---- ask workspace ---- */
+.ask-box{display:flex;gap:10px}
+.ask-box input{flex:1;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--ink);padding:13px 14px;font:400 15px/1.4 var(--sans);min-height:48px}
+.ask-box input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:none;border:1px solid var(--border2);border-radius:99px;color:var(--muted);padding:8px 14px;font-size:13px;min-height:36px;text-align:left}
+.chip:hover{color:var(--ink);border-color:var(--muted)}
+.answer{margin-top:20px}
+.answer__text{font-size:16px;line-height:1.6;margin:0 0 10px;white-space:pre-wrap}
+.answer__meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 14px}
+.block-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:18px 0 8px}
+pre{background:#0d1013;border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:0;font-family:var(--mono);font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.conf-bar{height:8px;border-radius:99px;background:var(--surface2);border:1px solid var(--border);overflow:hidden;max-width:420px}
+.conf-bar i{display:block;height:100%;background:var(--accent)}
+.conf-bar.low i{background:var(--amber)}
+.src{border-left:3px solid var(--accent);background:var(--surface2);padding:10px 12px;margin:0 0 8px;font-size:14px}
+.src .mono{font-size:12px;color:var(--muted)}
+.src b{font-weight:600}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0}
+.kv div{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.kv dt{font-size:12px;color:var(--muted);margin-bottom:4px}
+.kv dd{margin:0;font-family:var(--mono);font-size:15px}
+.notice{border:1px solid var(--border2);border-left:3px solid var(--amber);background:var(--surface2);border-radius:8px;padding:12px 14px;font-size:14px;margin:0 0 12px}
+.notice--red{border-left-color:var(--red)}
+.notice--green{border-left-color:var(--green)}
+.feedback{font-size:13px;color:var(--muted);margin-top:12px}
+/* ---- pipeline / trace graph ---- */
+.pipe{display:flex;flex-wrap:wrap;gap:0;margin:0 0 8px;list-style:none;padding:0}
+.pipe li{flex:1;min-width:130px;border:1px solid var(--border);border-left:none;padding:12px 14px;background:var(--surface)}
+.pipe li:first-child{border-left:1px solid var(--border);border-radius:8px 0 0 8px}
+.pipe li:last-child{border-radius:0 8px 8px 0}
+.pipe .p-n{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.pipe .p-t{font-weight:600;font-size:13px;display:block;margin-top:4px}
+.pipe .p-s{font-size:12px;color:var(--muted);display:block;margin-top:2px}
+.pipe li.done{border-color:#1d4a2e}
+.pipe li.done .p-s{color:var(--green)}
+.pipe li.skipped{opacity:.55}
+.pipe li.active{border-color:var(--amber)}
+.pipe li.active .p-s{color:var(--amber)}
+/* ---- stat cards / bars ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.stat strong{display:block;font-size:28px;font-weight:600;letter-spacing:-.03em;font-family:var(--mono)}
+.stat span{display:block;font-size:13px;font-weight:600;margin-top:4px}
+.stat small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.bar-row{display:grid;grid-template-columns:120px 1fr 64px;gap:12px;align-items:center;margin:8px 0;font-size:14px}
+.bar-row .bar{height:10px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;overflow:hidden}
+.bar-row .bar i{display:block;height:100%;background:var(--accent)}
+.bar-row .mono{text-align:right;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.diff{font-family:var(--mono);font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.diff .del{color:var(--red)}
+.diff .add{color:var(--green)}
+.steps{margin:0;padding-left:20px;font-size:14px;line-height:1.7}
+.steps li{margin-bottom:6px}
+.loading,.empty{color:var(--muted);font-size:14px}
+.app-error{color:var(--red);background:#221010;border:1px solid #4a2626;border-radius:8px;padding:12px 14px;font-size:14px}
+/* ---- command palette ---- */
+.palette{position:fixed;inset:0;background:rgb(0 0 0 / .6);display:flex;justify-content:center;padding-top:16vh;z-index:40}
+.palette[hidden]{display:none}
+.palette-box{width:min(560px,92vw);height:fit-content;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:8px}
+.palette-box input{width:100%;background:none;border:none;color:var(--ink);padding:12px;font:400 15px/1.4 var(--sans);outline:none}
+.palette-list{list-style:none;margin:0;padding:0}
+.palette-list button{display:flex;justify-content:space-between;width:100%;background:none;border:none;color:var(--ink);text-align:left;padding:11px 12px;border-radius:8px;font-size:14px;min-height:44px}
+.palette-list button:hover,.palette-list button[aria-selected="true"]{background:var(--surface2)}
+.palette-list .mono{font-size:12px;color:var(--faint)}
+footer{border-top:1px solid var(--border);margin-top:48px;padding-top:20px;font-size:13px;color:var(--muted);line-height:1.7}
+footer code{font-family:var(--mono);font-size:12px}
+@media (max-width:860px){
+  .shell{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid var(--border);padding:16px}
+  .brand{padding:4px 0 16px}
+  .nav-label{padding:14px 0 6px}
+  .nav-btn{padding:10px 0}
+  .side-foot{display:none}
+  .main{padding:20px 16px 48px}
+  .topbar{flex-wrap:wrap}
+  .ask-box{flex-direction:column}
+  .ask-box .btn{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="shell">
+  <aside class="sidebar" aria-label="Views">
+    <div class="brand">Axiom<small>Enterprise agentic copilot</small></div>
+    <div class="nav-label">Workspace</div>
+    <nav aria-label="Copilot views">
+      <button class="nav-btn" data-view="ask" aria-selected="true">Ask workspace <span class="kbd">A</span></button>
+      <button class="nav-btn" data-view="tickets" aria-selected="false">Tickets <span class="kbd">T</span></button>
+      <button class="nav-btn" data-view="disputes" aria-selected="false">Disputes <span class="kbd">D</span></button>
+      <button class="nav-btn" data-view="traces" aria-selected="false">Traces <span class="kbd">G</span></button>
+    </nav>
+    <div class="nav-label">Observability</div>
+    <nav aria-label="Observability views">
+      <button class="nav-btn" data-view="router" aria-selected="false">Router dashboard <span class="kbd">R</span></button>
+      <button class="nav-btn" data-view="schema" aria-selected="false">Schema <span class="kbd">S</span></button>
+      <button class="nav-btn" data-view="metrics" aria-selected="false">Metrics <span class="kbd">M</span></button>
+    </nav>
+    <div class="side-foot"><span class="dot" aria-hidden="true"></span><span id="health-line">API unreachable — start it on port 8125</span><br>LangGraph orchestrator · FastAPI · SQLite seed data. Every answer ships with its proof.</div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="topbar">
+      <h1>Axiom copilot console</h1>
+      <div class="topbar-row">
+        <p class="view-name" id="view-title">Ask workspace</p>
+        <p id="view-sub">One question, one validated answer.</p>
+        <button class="btn btn--primary btn--sm" id="topbar-ask" type="button">Ask Axiom</button>
+        <button class="palette-hint" id="palette-open" type="button" aria-label="Open command palette">Cmd+K</button>
+      </div>
+    </div>
+
+    <!-- 1. ASK -->
+    <section class="view" id="view-ask" aria-labelledby="view-title">
+      <h2>Ask a billing question</h2>
+      <p class="lede">Plain English in, validated SQL and the answer out. The question is classified, routed by confidence, and the SQL is validated before it runs.</p>
+      <form id="ask-form">
+        <label for="ask-q" class="block-label" style="margin-top:0">Your question</label>
+        <div class="ask-box">
+          <input type="text" id="ask-q" name="question" placeholder="What were total refunds in Mumbai last month?" autocomplete="off" required="" minlength="3" maxlength="500">
+          <button class="btn btn--primary" type="submit">Ask Axiom</button>
+        </div>
+        <div class="chips" aria-label="Example questions">
+          <button type="button" class="chip" data-example="What were total refunds in Mumbai last month?">Show refunds in Mumbai last month</button>
+          <button type="button" class="chip" data-example="Show me revenue by city">Show revenue by city</button>
+          <button type="button" class="chip" data-example="What is the average invoice value?">Show average invoice value</button>
+          <button type="button" class="chip" data-example="What is the refund rate?">Show refund rate</button>
+        </div>
+      </form>
+      <div id="ask-result" aria-live="polite"></div>
+    </section>
+
+    <!-- 2. TICKETS -->
+    <section class="view" id="view-tickets" hidden="">
+      <h2>Tickets</h2>
+      <p class="lede">Six seeded tickets. Work one and the agents plan, read the code, write a test and draft a diff — then a human approves or rejects it.</p>
+      <div class="panel"><div id="ticket-list"><p class="loading">Loading tickets…</p></div></div>
+      <div id="ticket-detail"></div>
+    </section>
+
+    <!-- 3. DISPUTES -->
+    <section class="view" id="view-disputes" hidden="">
+      <h2>Disputes</h2>
+      <p class="lede">Ten live disputes, grouped by reason. Resolve one and Axiom searches the historic precedent corpus, cites its matches and drafts a resolution.</p>
+      <div id="dispute-clusters"></div>
+      <div class="panel"><div id="dispute-list"><p class="loading">Loading disputes…</p></div></div>
+      <div id="dispute-detail"></div>
+    </section>
+
+    <!-- 4. TRACES -->
+    <section class="view" id="view-traces" hidden="">
+      <h2>Traces</h2>
+      <p class="lede">The pipeline a request took through the LangGraph orchestrator. Stage status comes from the API response; where the API reports no timing, no latency is shown.</p>
+      <div id="trace-body"><p class="loading">Ask a question first — its trace appears here.</p></div>
+    </section>
+
+    <!-- 5. ROUTER -->
+    <section class="view" id="view-router" hidden="">
+      <h2>Router dashboard</h2>
+      <p class="lede">Confidence-routed intent: high routes straight to the domain, medium goes to verification, low asks a clarification question. False-positive rate is measured on the golden set only.</p>
+      <div id="router-body"><p class="loading">Loading router data…</p></div>
+    </section>
+
+    <!-- 6. SCHEMA -->
+    <section class="view" id="view-schema" hidden="">
+      <h2>Schema</h2>
+      <p class="lede">The governed semantic layer: canonical metrics with definitions and synonyms, and the tables and columns SQL may touch.</p>
+      <div id="schema-body"><p class="loading">Loading schema…</p></div>
+    </section>
+
+    <!-- 7. METRICS -->
+    <section class="view" id="view-metrics" hidden="">
+      <h2>Metrics</h2>
+      <p class="lede">Autonomy and routing, from the live audit log and the golden-set eval run. Live traffic has no labels, so accuracy is reported on the golden set.</p>
+      <div id="metrics-body"><p class="loading">Loading metrics…</p></div>
+    </section>
+
+    <footer>
+      <p>Axiom — one shared LangGraph core, three agent domains: developer assistant, conversational analytics, disputes intelligence. Built with Python, FastAPI and LangGraph. No LangChain in the code.</p>
+      <p>Live data: 6 tickets, 10 disputes, 5 tables, 6 canonical metrics, 30-question golden set. Run the API with <code>uvicorn app.main:app --port 8125</code> and this console with <code>python3 site/serve.py</code>.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="palette" id="palette" hidden="" role="dialog" aria-label="Command palette">
+  <div class="palette-box">
+    <input type="text" id="palette-input" placeholder="Type a view or an action…" aria-label="Search views and actions" autocomplete="off">
+    <ul class="palette-list" id="palette-list"></ul>
+  </div>
+</div>
+
+<script src="assets/app.js" defer=""></script>
+
+
+</body></html>
