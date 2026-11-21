@@ -5,9 +5,9 @@ confidence-routed intent, a governed semantic layer, and a SQL safety
 harness — with three agent domains on top (developer assistant,
 conversational analytics, disputes intelligence).
 
-**Phase 1 ships the shared core + the conversational analytics slice.**
-Tickets and disputes slices land in Phase 2. No UI yet — the API is the
-product surface for now.
+**Phase 2 ships the shared core + all three slices (analytics, tickets,
+disputes) + the MCP server.** No UI yet — the API is the product surface
+for now.
 
 > Every answer ships with its proof: the SQL that ran, the sources it
 > came from, and the audit trail behind it.
@@ -28,6 +28,9 @@ curl -X POST localhost:8125/ask -H 'Content-Type: application/json' \
 ## Endpoints
 
 - `GET /health` · `POST /ask` · `GET /schema` · `GET /router` · `GET /metrics`
+- `GET /tickets` · `GET /tickets/{id}` · `POST /tickets/{id}/work` · `POST /tickets/{id}/review`
+- `GET /disputes` · `GET /disputes/{id}` · `POST /disputes/{id}/resolve`
+- MCP server: `.venv/bin/python app/mcp_server.py` (stdio JSON-RPC; see `SPEC.md`)
 
 ## Evals
 
@@ -37,7 +40,7 @@ curl -X POST localhost:8125/ask -H 'Content-Type: application/json' \
 ```
 
 Measured on the golden set (this build): router 12/12, analytics 6/6,
-SQL validation 4/4, false-positive rate 0.0. See `SPEC.md` — these are
+SQL validation 4/4, tickets 4/4, disputes 4/4, false-positive rate 0.0. See `SPEC.md` — these are
 golden-set measurements, not production outcomes.
 
 ## Config

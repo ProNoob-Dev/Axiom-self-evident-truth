@@ -1,0 +1,514 @@
+{
+  "tickets_work": [
+    200,
+    {
+      "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+      "id": "TKT-101",
+      "priority": "high",
+      "repo_area": "billing",
+      "status": "awaiting_review",
+      "title": "Refund totals displayed 100x too large on dashboard",
+      "plan": [
+        "Reproduce the issue: billing \u2014 refund totals displayed 100x too large on dashboard.",
+        "Read billing.py and the ADRs it references before changing anything.",
+        "Check the money path against ADR-001 (paise in, rupees out).",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "billing.py",
+          "score": 0.284,
+          "lines": [
+            1,
+            3,
+            4,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Billing service (sample codebase for the Axiom dev slice)."
+        },
+        {
+          "file": "test_billing.py",
+          "score": 0.238,
+          "lines": [
+            1,
+            3,
+            7,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Existing tests for the billing service."
+        },
+        {
+          "file": "docs/adr-001.md",
+          "score": 0.174,
+          "lines": [
+            1,
+            5,
+            6,
+            10,
+            11
+          ],
+          "excerpt": "# ADR-001: Money in paise, display in rupees"
+        }
+      ],
+      "proposed_test": "from billing import refund_summary\n\n\ndef test_refund_summary_displays_rupees():\n    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "diff": "--- a/billing.py\n+++ b/billing.py\n@@ - refund_summary: format the paise total as rupees @@\n-    return f\"Total refunds: Rs {total:,.2f}\"\n+    return f\"Total refunds: {format_inr(total)}\"\n\n--- a/test_billing.py (new test)\n+++ b/test_billing.py\n+from billing import refund_summary\n+\n+\n+def test_refund_summary_displays_rupees():\n+    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n+    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "review_summary": "Review proposal for TKT-101 (Refund totals displayed 100x too large on dashboard): 7 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+    }
+  ],
+  "tickets_review_approve": [
+    200,
+    {
+      "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+      "id": "TKT-101",
+      "priority": "high",
+      "repo_area": "billing",
+      "status": "approved",
+      "title": "Refund totals displayed 100x too large on dashboard",
+      "plan": [
+        "Reproduce the issue: billing \u2014 refund totals displayed 100x too large on dashboard.",
+        "Read billing.py and the ADRs it references before changing anything.",
+        "Check the money path against ADR-001 (paise in, rupees out).",
+        "Write a failing test that captures the expected behaviour.",
+        "Implement the fix in the smallest change that satisfies the test.",
+        "Run the existing test suite plus the new test.",
+        "Submit the diff for human review \u2014 no change ships without approval."
+      ],
+      "code_read": [
+        {
+          "file": "billing.py",
+          "score": 0.284,
+          "lines": [
+            1,
+            3,
+            4,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Billing service (sample codebase for the Axiom dev slice)."
+        },
+        {
+          "file": "test_billing.py",
+          "score": 0.238,
+          "lines": [
+            1,
+            3,
+            7,
+            10,
+            11
+          ],
+          "excerpt": "\"\"\"Existing tests for the billing service."
+        },
+        {
+          "file": "docs/adr-001.md",
+          "score": 0.174,
+          "lines": [
+            1,
+            5,
+            6,
+            10,
+            11
+          ],
+          "excerpt": "# ADR-001: Money in paise, display in rupees"
+        }
+      ],
+      "proposed_test": "from billing import refund_summary\n\n\ndef test_refund_summary_displays_rupees():\n    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "diff": "--- a/billing.py\n+++ b/billing.py\n@@ - refund_summary: format the paise total as rupees @@\n-    return f\"Total refunds: Rs {total:,.2f}\"\n+    return f\"Total refunds: {format_inr(total)}\"\n\n--- a/test_billing.py (new test)\n+++ b/test_billing.py\n+from billing import refund_summary\n+\n+\n+def test_refund_summary_displays_rupees():\n+    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n+    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+      "review_summary": "Review proposal for TKT-101 (Refund totals displayed 100x too large on dashboard): 7 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+    }
+  ],
+  "tickets_list": [
+    200,
+    {
+      "count": 6,
+      "reason_clusters": null
+    }
+  ],
+  "disputes_resolve_1": [
+    200,
+    {
+      "dispute": {
+        "id": 1,
+        "reason": "wrong amount",
+        "reason_cluster": "wrong_amount",
+        "reason_cluster_label": "wrong amount",
+        "status": "open",
+        "opened_on": "2026-10-29",
+        "resolved_on": null,
+        "resolution": null,
+        "customer": {
+          "name": "Divya Menon",
+          "city": "Delhi",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 27,
+          "amount_paise": 2224266
+        }
+      },
+      "reason_cluster": "wrong amount",
+      "precedents": [
+        {
+          "id": "DSP-P08",
+          "reason": "wrong amount",
+          "resolution": "Charged the annual price instead of monthly; corrected the invoice and refunded the difference.",
+          "score": 0.339
+        },
+        {
+          "id": "DSP-P07",
+          "reason": "wrong amount",
+          "resolution": "Invoice corrected to the contracted price and the overcharge refunded; billing run re-checked for the same error.",
+          "score": 0.31
+        },
+        {
+          "id": "DSP-P09",
+          "reason": "wrong amount",
+          "resolution": "Usage tier miscalculated; invoice re-issued at the correct tier and the excess refunded with an apology credit.",
+          "score": 0.281
+        }
+      ],
+      "citations": [
+        "DSP-P08",
+        "DSP-P07",
+        "DSP-P09"
+      ],
+      "draft_resolution": "Draft resolution for dispute 1 (wrong amount, \u20b922,243): following precedent DSP-P08, DSP-P07, DSP-P09 \u2014 Charged the annual price instead of monthly; corrected the invoice and refunded the difference. Apply the same remedy, confirm the credit with the customer, and record the outcome against the precedent.",
+      "human_review": false
+    }
+  ],
+  "disputes_resolve_2_no_precedent": [
+    200,
+    {
+      "dispute": {
+        "id": 2,
+        "reason": "unauthorised transaction",
+        "reason_cluster": "unauthorised_transaction",
+        "reason_cluster_label": "unauthorised transaction",
+        "status": "resolved",
+        "opened_on": "2026-09-28",
+        "resolved_on": "2026-10-07",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Aditya Rao",
+          "city": "Bengaluru",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 32,
+          "amount_paise": 1109733
+        }
+      },
+      "reason_cluster": "unauthorised transaction",
+      "precedents": [],
+      "citations": [],
+      "draft_resolution": "No precedent found above the match threshold for this unauthorised transaction dispute \u2014 human review required. No resolution drafted.",
+      "human_review": true
+    }
+  ],
+  "disputes_list": [
+    200,
+    {
+      "count": 10,
+      "reason_clusters": {
+        "wrong amount": 1,
+        "unauthorised transaction": 1,
+        "service not delivered": 1,
+        "refund delay": 6,
+        "duplicate billing": 1
+      }
+    }
+  ],
+  "ask_dev": [
+    200,
+    {
+      "request_id": "req_130a9f778f32",
+      "route": "dev",
+      "answer": "This looks like dev work matching ticket TKT-101 (Refund totals displayed 100x too large on dashboard, match score 0.214). Run POST /tickets/TKT-101/work to work it \u2014 plan, code read, test, review diff.",
+      "message": "This looks like dev work matching ticket TKT-101 (Refund totals displayed 100x too large on dashboard, match score 0.214). Run POST /tickets/TKT-101/work to work it \u2014 plan, code read, test, review diff.",
+      "matched_ticket": {
+        "description": "Dashboard shows refund totals 100x too large: refunds are summed in paise but displayed as rupees. Reported by [EMAIL] \u2014 refund_summary in billing.py formats the paise total directly instead of using format_inr. Fix the display and add a test asserting the formatted value.",
+        "id": "TKT-101",
+        "priority": "high",
+        "repo_area": "billing",
+        "status": "approved",
+        "title": "Refund totals displayed 100x too large on dashboard",
+        "plan": [
+          "Reproduce the issue: billing \u2014 refund totals displayed 100x too large on dashboard.",
+          "Read billing.py and the ADRs it references before changing anything.",
+          "Check the money path against ADR-001 (paise in, rupees out).",
+          "Write a failing test that captures the expected behaviour.",
+          "Implement the fix in the smallest change that satisfies the test.",
+          "Run the existing test suite plus the new test.",
+          "Submit the diff for human review \u2014 no change ships without approval."
+        ],
+        "code_read": [
+          {
+            "file": "billing.py",
+            "score": 0.284,
+            "lines": [
+              1,
+              3,
+              4,
+              10,
+              11
+            ],
+            "excerpt": "\"\"\"Billing service (sample codebase for the Axiom dev slice)."
+          },
+          {
+            "file": "test_billing.py",
+            "score": 0.238,
+            "lines": [
+              1,
+              3,
+              7,
+              10,
+              11
+            ],
+            "excerpt": "\"\"\"Existing tests for the billing service."
+          },
+          {
+            "file": "docs/adr-001.md",
+            "score": 0.174,
+            "lines": [
+              1,
+              5,
+              6,
+              10,
+              11
+            ],
+            "excerpt": "# ADR-001: Money in paise, display in rupees"
+          }
+        ],
+        "proposed_test": "from billing import refund_summary\n\n\ndef test_refund_summary_displays_rupees():\n    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+        "diff": "--- a/billing.py\n+++ b/billing.py\n@@ - refund_summary: format the paise total as rupees @@\n-    return f\"Total refunds: Rs {total:,.2f}\"\n+    return f\"Total refunds: {format_inr(total)}\"\n\n--- a/test_billing.py (new test)\n+++ b/test_billing.py\n+from billing import refund_summary\n+\n+\n+def test_refund_summary_displays_rupees():\n+    # 33456 paise is Rs 334.56, not Rs 33,456.00 (TKT-101).\n+    assert refund_summary([10000, 23456]) == \"Total refunds: Rs 334.56\"\n",
+        "review_summary": "Review proposal for TKT-101 (Refund totals displayed 100x too large on dashboard): 7 plan steps, 3 code files read, 1 proposed test, diff attached. Awaiting human review."
+      },
+      "matched_dispute": null,
+      "action": "POST /tickets/TKT-101/work",
+      "summary": "This looks like dev work matching ticket TKT-101 (Refund totals displayed 100x too large on dashboard, match score 0.214). Run POST /tickets/TKT-101/work to work it \u2014 plan, code read, test, review diff.",
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 0.99,
+      "band": "high",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    }
+  ],
+  "ask_disputes": [
+    200,
+    {
+      "request_id": "req_863e635160db",
+      "route": "disputes",
+      "answer": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "message": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "matched_ticket": null,
+      "matched_dispute": {
+        "id": 7,
+        "reason": "subscription cancelled after payment",
+        "reason_cluster": "refund_delay",
+        "reason_cluster_label": "refund delay",
+        "status": "resolved",
+        "opened_on": "2026-11-07",
+        "resolved_on": "2026-11-09",
+        "resolution": "Refund issued",
+        "customer": {
+          "name": "Kavya Singh",
+          "city": "Mumbai",
+          "email": "[EMAIL]",
+          "phone": "[PHONE]"
+        },
+        "invoice": {
+          "id": 11,
+          "amount_paise": 1535217
+        }
+      },
+      "action": "POST /disputes/7/resolve",
+      "summary": "This looks like a dispute about subscription cancelled after payment (dispute 7, Kavya Singh). Run POST /disputes/7/resolve to draft a resolution from precedent.",
+      "sql": null,
+      "sources": {
+        "schema": [],
+        "past_queries": []
+      },
+      "confidence": 0.799,
+      "band": "high",
+      "metric": null,
+      "validation": null,
+      "rows": []
+    }
+  ],
+  "ask_analytics_regression": [
+    200,
+    {
+      "request_id": "req_2f899a3bb558",
+      "route": "answered",
+      "answer": "Refunds in Mumbai from 2026-10-01 to 2026-10-31: \u20b9429.",
+      "message": null,
+      "matched_ticket": null,
+      "matched_dispute": null,
+      "action": null,
+      "summary": null,
+      "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds AS r JOIN invoices AS i ON r.invoice_id = i.id JOIN customers AS c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= '2026-10-01' AND r.refunded_on <= '2026-10-31' LIMIT 100",
+      "sources": {
+        "schema": [
+          {
+            "table": "refunds",
+            "description": "Refunds issued against invoices. Amounts in paise.",
+            "columns": [
+              "id",
+              "invoice_id",
+              "amount_paise",
+              "reason",
+              "refunded_on"
+            ],
+            "matched_columns": [],
+            "score": 1
+          }
+        ],
+        "past_queries": [
+          {
+            "question": "What were total refunds in Mumbai last month?",
+            "sql": "SELECT COALESCE(SUM(r.amount_paise), 0) AS refunds FROM refunds r JOIN invoices i ON r.invoice_id = i.id JOIN customers c ON i.customer_id = c.id WHERE c.city = 'Mumbai' AND r.refunded_on >= date('now', 'start of month', '-1 month') AND r.refunded_on < date('now', 'start of month')",
+            "score": 0.524
+          },
+          {
+            "question": "What is the refund rate?",
+            "sql": "WITH pay AS (SELECT COALESCE(SUM(p.amount_paise), 0) AS total FROM payments p), ref AS (SELECT COALESCE(SUM(r.amount_paise), 0) AS total FROM refunds r) SELECT CASE WHEN (SELECT total FROM pay) = 0 THEN 0.0 ELSE CAST((SELECT total FROM ref) AS REAL) / (SELECT total FROM pay) END AS refund_rate",
+            "score": 0.144
+          },
+          {
+            "question": "What is the dispute rate?",
+            "sql": "WITH dsp AS (SELECT COUNT(*) AS total FROM disputes d), inv AS (SELECT COUNT(*) AS total FROM invoices i) SELECT CASE WHEN (SELECT total FROM inv) = 0 THEN 0.0 ELSE CAST((SELECT total FROM dsp) AS REAL) / (SELECT total FROM inv) END AS dispute_rate",
+            "score": 0.122
+          }
+        ]
+      },
+      "confidence": 0.99,
+      "band": "high",
+      "metric": "refunds",
+      "validation": {
+        "empty_result": false,
+        "outliers": [],
+        "schema_conformant": true
+      },
+      "rows": [
+        {
+          "refunds": 42916
+        }
+      ]
+    }
+  ],
+  "mcp_smoke": {
+    "returncode": 0,
+    "replies": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "protocolVersion": "2024-11-05",
+          "capabilities": {
+            "tools": {}
+          },
+          "serverInfo": {
+            "name": "axiom",
+            "version": "0.2.0"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": {
+          "tools": [
+            {
+              "name": "search_codebase",
+              "description": "Search the sample codebase for files matching a query.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "k": {
+                    "type": "integer",
+                    "default": 3
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            },
+            {
+              "name": "ask_analytics",
+              "description": "Answer a billing analytics question with validated SQL.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ]
+              }
+            },
+            {
+              "name": "resolve_dispute",
+              "description": "Draft a resolution for a live dispute from precedent cases.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "dispute_id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "dispute_id"
+                ]
+              }
+            },
+            {
+              "name": "work_ticket",
+              "description": "Run the dev agents on a ticket: plan, code read, test, review diff.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "ticket_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ticket_id"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "[{\"file\": \"billing.py\", \"score\": 0.519, \"excerpt\": \"\\\"\\\"\\\"Billing service (sample codebase for the Axiom dev slice).\\n\\nMoney is stored in paise (int) everywhere; only the presentation layer\\nconverts to rupees. See docs/adr-001.md.\\n\\\"\\\"\\\"\\n\\nfrom __future__ impo\"}, {\"file\": \"docs/adr-001.md\", \"score\": 0.372, \"excerpt\": \"# ADR-001: Money in paise, display in rupees\\n\\n## Decision\\n\\nAll money is stored and computed as integer paise. Only the presentation\\nlayer converts paise to rupees, through `format_inr` in `billing.py`\"}]"
+            }
+          ]
+        }
+      }
+    ],
+    "stderr": ""
+  }
+}

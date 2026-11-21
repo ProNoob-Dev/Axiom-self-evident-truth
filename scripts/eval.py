@@ -1,14 +1,16 @@
-"""Golden-set eval: router accuracy, analytics correctness, SQL validation.
+"""Golden-set eval: router accuracy, analytics correctness, SQL validation,
+tickets flow, disputes precedent.
 
 Writes eval/last_run.json with measured numbers only. Exit code 1 when a
-gate fails: router accuracy < 0.8, any SQL-validation case wrong, or
-analytics < 5/6 correct.
+gate fails: router accuracy < 0.8, any SQL-validation case wrong,
+analytics < 5/6 correct, or any tickets/disputes case wrong.
 """
 
 from __future__ import annotations
 
 import json
 import re
+import shutil
 import sqlite3
 import sys
 import tempfile
@@ -17,6 +19,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE_DIR))
 
+from app import disputes as disputes_mod  # noqa: E402
+from app import tickets as tickets_mod  # noqa: E402
 from app.classifier import Classifier  # noqa: E402
 from app.graph import Axiom  # noqa: E402
 from app.sqlsafety import execute_readonly, validate  # noqa: E402
@@ -86,12 +90,68 @@ def main() -> int:
                                 "correct": ok == case["expected_ok"],
                                 "why": case["why"]})
 
+        # Tickets: run against a temp copy so the eval never mutates the
+        # shipped tickets file.
+        ticket_results = []
+        tmp_tickets = Path(tmp) / "tickets.json"
+        shutil.copy(BASE_DIR / "data" / "tickets.json", tmp_tickets)
+        for case in golden.get("tickets", []):
+            expect = case.get("expect", {})
+            if expect.get("error") == "not_found":
+                try:
+                    tickets_mod.work_ticket(case["ticket_id"], path=str(tmp_tickets),
+                                            audit_path=str(Path(tmp) / "audit.log"))
+                    correct = False
+                except KeyError:
+                    correct = True
+                ticket_results.append({"ticket_id": case["ticket_id"],
+                                       "correct": correct})
+                continue
+            worked = tickets_mod.work_ticket(
+                case["ticket_id"], path=str(tmp_tickets),
+                audit_path=str(Path(tmp) / "audit.log"))
+            if "review" in case:
+                # Work must land in awaiting_review, then the HITL decision.
+                correct = worked["status"] == "awaiting_review"
+            else:
+                correct = (worked["status"] == expect["status"]
+                           and bool(worked.get("plan")) == expect.get("has_plan", True)
+                           and bool(worked.get("diff")) == expect.get("has_diff", True))
+            if "review" in case:
+                reviewed = tickets_mod.review_ticket(
+                    case["ticket_id"], case["review"], case.get("note"),
+                    path=str(tmp_tickets), audit_path=str(Path(tmp) / "audit.log"))
+                correct = correct and reviewed["status"] == case["expect_status"]
+            ticket_results.append({"ticket_id": case["ticket_id"],
+                                   "status": worked["status"], "correct": correct})
+
+        # Disputes: resolve is read-only on the DB; audit goes to tmp.
+        dispute_results = []
+        for case in golden.get("disputes", []):
+            result = disputes_mod.resolve_dispute(
+                case["dispute_id"], audit_path=str(Path(tmp) / "audit.log"))
+            expect = case["expect"]
+            if expect.get("has_precedent"):
+                correct = (len(result["precedents"]) >= expect["min_precedents"]
+                           and result["citations"] == [p["id"] for p in result["precedents"]]
+                           and not result["human_review"])
+            else:
+                correct = (not result["precedents"] and result["human_review"]
+                           and "human review" in result["draft_resolution"])
+            dispute_results.append({"dispute_id": case["dispute_id"],
+                                    "precedents": [p["id"] for p in result["precedents"]],
+                                    "human_review": result["human_review"],
+                                    "correct": correct})
+
     router_correct = sum(r["correct"] for r in router_results)
     analytics_correct = sum(r["correct"] for r in analytics_results)
     sql_correct = sum(r["correct"] for r in sql_results)
+    tickets_correct = sum(r["correct"] for r in ticket_results)
+    disputes_correct = sum(r["correct"] for r in dispute_results)
     report = {
         "golden": {
-            "total": len(router_results) + len(analytics_results) + len(sql_results),
+            "total": len(router_results) + len(analytics_results) + len(sql_results)
+            + len(ticket_results) + len(dispute_results),
             "router_accuracy": router_correct / len(router_results),
             "router_correct": router_correct,
             "router_total": len(router_results),
@@ -101,17 +161,25 @@ def main() -> int:
             "analytics_total": len(analytics_results),
             "sql_validation_correct": sql_correct,
             "sql_validation_total": len(sql_results),
+            "tickets_correct": tickets_correct,
+            "tickets_total": len(ticket_results),
+            "disputes_correct": disputes_correct,
+            "disputes_total": len(dispute_results),
         },
         "router": router_results,
         "analytics": analytics_results,
         "sql_validation": sql_results,
+        "tickets": ticket_results,
+        "disputes": dispute_results,
     }
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report["golden"], indent=2))
     gates_ok = (report["golden"]["router_accuracy"] >= 0.8
                 and sql_correct == len(sql_results)
-                and analytics_correct >= 5)
+                and analytics_correct >= 5
+                and tickets_correct == len(ticket_results)
+                and disputes_correct == len(dispute_results))
     return 0 if gates_ok else 1
 
 

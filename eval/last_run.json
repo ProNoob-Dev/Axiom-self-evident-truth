@@ -1,6 +1,6 @@
 {
   "golden": {
-    "total": 22,
+    "total": 30,
     "router_accuracy": 1.0,
     "router_correct": 12,
     "router_total": 12,
@@ -9,7 +9,11 @@
     "analytics_correct": 6,
     "analytics_total": 6,
     "sql_validation_correct": 4,
-    "sql_validation_total": 4
+    "sql_validation_total": 4,
+    "tickets_correct": 4,
+    "tickets_total": 4,
+    "disputes_correct": 4,
+    "disputes_total": 4
   },
   "router": [
     {
@@ -210,6 +214,65 @@
       ],
       "correct": true,
       "why": "PII column email selected unmasked"
+    }
+  ],
+  "tickets": [
+    {
+      "ticket_id": "TKT-101",
+      "status": "awaiting_review",
+      "correct": true
+    },
+    {
+      "ticket_id": "TKT-102",
+      "status": "awaiting_review",
+      "correct": true
+    },
+    {
+      "ticket_id": "TKT-103",
+      "status": "awaiting_review",
+      "correct": true
+    },
+    {
+      "ticket_id": "TKT-999",
+      "correct": true
+    }
+  ],
+  "disputes": [
+    {
+      "dispute_id": 1,
+      "precedents": [
+        "DSP-P08",
+        "DSP-P07",
+        "DSP-P09"
+      ],
+      "human_review": false,
+      "correct": true
+    },
+    {
+      "dispute_id": 8,
+      "precedents": [
+        "DSP-P03",
+        "DSP-P01",
+        "DSP-P02"
+      ],
+      "human_review": false,
+      "correct": true
+    },
+    {
+      "dispute_id": 3,
+      "precedents": [
+        "DSP-P12",
+        "DSP-P10",
+        "DSP-P11"
+      ],
+      "human_review": false,
+      "correct": true
+    },
+    {
+      "dispute_id": 2,
+      "precedents": [],
+      "human_review": true,
+      "correct": true
     }
   ]
 }

@@ -19,11 +19,13 @@ from .analytics import (
     parse_dates, validate_result,
 )
 from .classifier import Classifier
+from .disputes import match_dispute
 from .llm import AzureError, get_client
 from .pii import mask_pii
 from .retrieval import Doc, get_retriever
 from .semantic import SemanticLayer
 from .sqlsafety import enforce_limit, execute_readonly, validate
+from .tickets import search_tickets
 
 
 class GraphState(TypedDict, total=False):
@@ -44,18 +46,24 @@ class GraphState(TypedDict, total=False):
     columns: list[str]
     rows: list[tuple]
     result_validation: dict
-    route: str  # answered | clarified | needs_verification | escalated | phase2
+    route: str  # answered | clarified | needs_verification | escalated | dev | disputes
     answer: str | None
     message: str | None
+    matched_ticket: dict | None
+    matched_dispute: dict | None
+    action: str | None
+    summary: str | None
     confidence: float
     band: str
 
 
 class Axiom:
     def __init__(self, db_path: str | None = None, audit_path=None,
-                 semantic: SemanticLayer | None = None) -> None:
+                 semantic: SemanticLayer | None = None,
+                 tickets_path: str | None = None) -> None:
         self.db_path = db_path or config.DB_PATH
         self.audit_path = audit_path
+        self.tickets_path = tickets_path or str(config.DATA_DIR / "tickets.json")
         self.semantic = semantic or SemanticLayer()
         self.classifier = Classifier()
         self._past_queries = json.loads(
@@ -91,7 +99,7 @@ class Axiom:
             if decision["band"] == "medium":
                 return "verify"
             if decision["domain"] != "analytics":
-                return "phase2"
+                return "domain_route"
             return "retrieve_schema"
 
         def verify(state: GraphState) -> GraphState:
@@ -125,20 +133,48 @@ class Axiom:
             if state.get("route") == "needs_verification":
                 return "respond"
             if state["classification"]["domain"] != "analytics":
-                return "phase2"
+                return "domain_route"
             return "retrieve_schema"
 
         def clarify(state: GraphState) -> GraphState:
             return {**state, "route": "clarified",
                     "message": state["classification"].get("clarification")}
 
-        def phase2(state: GraphState) -> GraphState:
+        def domain_route(state: GraphState) -> GraphState:
+            # /ask routes and points at the dedicated endpoint; it does NOT
+            # run the ticket/dispute work itself — that is what the
+            # endpoint is for. Honest routing, not a pretend run.
             domain = state["classification"]["domain"]
-            return {**state, "route": "phase2",
-                    "message": (f"The {domain} slice lands in Phase 2 — this build "
-                                "ships the shared core and the analytics slice only. "
-                                "Try a billing question, e.g. "
-                                "'total refunds in Mumbai last month'.")}
+            if domain == "dev":
+                matched = search_tickets(state["question"], path=self.tickets_path)
+                if matched:
+                    ticket = matched["ticket"]
+                    action = f"POST /tickets/{ticket['id']}/work"
+                    summary = (f"This looks like dev work matching ticket "
+                               f"{ticket['id']} ({ticket['title']}, "
+                               f"match score {matched['score']}). Run {action} "
+                               "to work it — plan, code read, test, review diff.")
+                else:
+                    action = None
+                    summary = ("This looks like dev work, but no ticket matches "
+                               "it. List tickets with GET /tickets first.")
+                return {**state, "route": "dev", "matched_ticket": matched["ticket"] if matched else None,
+                        "matched_dispute": None, "action": action,
+                        "summary": summary, "message": summary}
+            matched = match_dispute(state["question"], self.db_path)
+            if matched:
+                action = f"POST /disputes/{matched['id']}/resolve"
+                summary = (f"This looks like a dispute about "
+                           f"{matched['reason']} (dispute {matched['id']}, "
+                           f"{matched['customer']['name']}). Run {action} to "
+                           "draft a resolution from precedent.")
+            else:
+                action = None
+                summary = ("This looks like a dispute question, but no live "
+                           "dispute matches it. List disputes with GET /disputes first.")
+            return {**state, "route": "disputes", "matched_ticket": None,
+                    "matched_dispute": matched, "action": action,
+                    "summary": summary, "message": summary}
 
         def retrieve_schema(state: GraphState) -> GraphState:
             hits = self.semantic.search_schema(state["question"])
@@ -219,7 +255,7 @@ class Axiom:
 
         def respond(state: GraphState) -> GraphState:
             if state.get("route") in ("clarified", "needs_verification",
-                                      "escalated", "phase2"):
+                                      "escalated", "dev", "disputes"):
                 return {**state, "answer": state.get("message"), "confidence": state.get("confidence", 0.0)}
             answer = format_answer(state["metric"], state["columns"], state["rows"],
                                    state["entities"], state["date_range"])
@@ -230,7 +266,7 @@ class Axiom:
         graph = StateGraph(GraphState)
         for name, fn in [
                 ("intake", intake), ("classify", classify), ("verify", verify),
-                ("clarify", clarify), ("phase2", phase2),
+                ("clarify", clarify), ("domain_route", domain_route),
                 ("retrieve_schema", retrieve_schema), ("generate_sql", generate_sql),
                 ("validate_sql", validate_sql), ("regenerate", regenerate),
                 ("escalate", escalate), ("execute", execute),
@@ -240,13 +276,13 @@ class Axiom:
         graph.add_edge("intake", "classify")
         graph.add_conditional_edges("classify", after_classify,
                                     {"clarify": "clarify", "verify": "verify",
-                                     "phase2": "phase2",
+                                     "domain_route": "domain_route",
                                      "retrieve_schema": "retrieve_schema"})
         graph.add_conditional_edges("verify", after_verify,
-                                    {"respond": "respond", "phase2": "phase2",
+                                    {"respond": "respond", "domain_route": "domain_route",
                                      "retrieve_schema": "retrieve_schema"})
         graph.add_edge("clarify", "respond")
-        graph.add_edge("phase2", "respond")
+        graph.add_edge("domain_route", "respond")
         graph.add_edge("retrieve_schema", "generate_sql")
         graph.add_conditional_edges("generate_sql", after_generate,
                                     {"respond": "respond", "validate_sql": "validate_sql"})
@@ -282,6 +318,10 @@ class Axiom:
             "route": route,
             "answer": state.get("answer"),
             "message": state.get("message"),
+            "matched_ticket": state.get("matched_ticket"),
+            "matched_dispute": state.get("matched_dispute"),
+            "action": state.get("action"),
+            "summary": state.get("summary"),
             "sql": state.get("sql"),
             "sources": {
                 "schema": state.get("schema_hits", []),

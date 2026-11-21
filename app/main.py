@@ -1,8 +1,7 @@
 """FastAPI app: endpoints and wiring.
 
-Phase 2 hook: add tickets/disputes routers with two include_router lines
-below the marker comment — the /ask graph already routes those domains to
-a "phase2" response until then.
+Phase 2: tickets + disputes routers wired below; /ask routes dev/disputes
+questions to those domains (see app/graph.py domain_route).
 """
 
 from __future__ import annotations
@@ -15,9 +14,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from . import audit, config
+from .disputes import router as disputes_router
 from .graph import Axiom
 from .llm import AzureError
 from .semantic import SemanticLayer
+from .tickets import router as tickets_router
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,9 +108,9 @@ def create_app(axiom: Axiom | None = None) -> FastAPI:
             "sql_validation_correct_golden": golden.get("sql_validation_correct"),
         }
 
-    # --- Phase 2 hook: add tickets/disputes routers here ---
-    # app.include_router(tickets_router)
-    # app.include_router(disputes_router)
+    # Phase 2 routers: tickets + disputes slices.
+    app.include_router(tickets_router)
+    app.include_router(disputes_router)
 
     return app
 
