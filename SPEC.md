@@ -1,9 +1,10 @@
-# Axiom — SPEC (Phase 2)
+# Axiom — SPEC (Phase 3, final)
 
 One enterprise agentic copilot platform: a shared LangGraph core with three
-agent domains on top. **Phase 2 adds the tickets (dev) and disputes slices
-plus the MCP server.** Phase 1 shipped the shared core + the conversational
-analytics slice.
+agent domains on top. **Phase 3 is the final backend pass: full README, CI
+check, final live verification.** Phase 2 added the tickets (dev) and
+disputes slices plus the MCP server. Phase 1 shipped the shared core + the
+conversational analytics slice.
 
 ## Weekend MVP cut (law)
 
@@ -107,6 +108,22 @@ the data to prove masking; the API never returns them unmasked.
 - `GET /router` — confidence distribution, domains, golden-set accuracy and
   false-positive rate (measured only; live traffic has no labels)
 - `GET /metrics` — autonomy rate, routing accuracy, counts
+- `GET /tickets` · `GET /tickets/{id}` — ticket queue / single ticket
+- `POST /tickets/{id}/work` — plan → code read → test → diff, `awaiting_review`
+- `POST /tickets/{id}/review` — HITL approve / reject (only from `awaiting_review`)
+- `GET /disputes` · `GET /disputes/{id}` — live disputes + reason clusters
+- `POST /disputes/{id}/resolve` — precedent-cited draft resolution, or `human_review`
+
+## Final verification (Phase 3, 21 Nov 2026)
+
+Full test suite: 67 passed. Golden eval: 30/30 (router 12/12, analytics 6/6,
+SQL validation 4/4, tickets 4/4, disputes 4/4, false-positive rate 0.0).
+Live sweep of all 14 endpoints on port 8125: every call HTTP 200 — recorded
+in `eval/final_check.json`. CI (`.github/workflows/ci.yml`) parses and runs
+checkout → Python 3.12 → pip install → seed → pytest → golden-set eval gate;
+CI green can only be confirmed after push (GitHub Actions cannot run locally).
+`data/tickets.json` was restored to pristine after the sweep (all 6 tickets
+`open`).
 
 ## Evals
 

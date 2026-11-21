@@ -31,8 +31,9 @@ POST /ask
 | `app/graph.py` | LangGraph orchestrator + `Axiom.ask()` |
 | `app/main.py` | FastAPI: `/health`, `/ask`, `/schema`, `/router`, `/metrics` |
 
-## Phase 2 hook
+## Phase 2 (done)
 
-`app/main.py` has a marked hook comment: add the tickets/disputes
-routers with two `include_router` lines. The graph already routes
-high-confidence dev/disputes questions to a `phase2` response.
+`app/main.py` wires the tickets/disputes routers with two
+`include_router` lines. The graph routes high-confidence dev/disputes
+questions to a `phase2` response that names the ticket/dispute and the
+dedicated endpoint — `/ask` does not run the work itself.
